@@ -12,6 +12,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
     private Paint paint;
     private int playerX, playerY;
+    private int joystickCenterX = 200;
+    private int joystickCenterY = 2000;
+    private int joyStickX = 200;
+    private int joyStickY = 2000;
+    private int joystickRadius = 150; // Radius of the joystick
+    private int margin = 50; // Margin between joystick and screen edges
+    private int playerVelocityX = 0;
+    private int playerVelocityY = 0;
 
     public GameView(Context context) {
         super(context);
@@ -50,25 +58,64 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_MOVE:
-                playerX = (int) event.getX();
-                playerY = (int) event.getY();
-                break;
+        float touchX = event.getX();
+        float touchY = event.getY();
+        float distanceX = touchX - joystickCenterX;
+        float distanceY = touchY - joystickCenterY;
+        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        if (action == MotionEvent.ACTION_MOVE){
+            if (distance <= joystickRadius - 50){
+                joyStickX = (int) touchX;
+                joyStickY = (int) touchY;
+            }
+            else {
+                playerX = (int) touchX;
+                playerY = (int) touchY;
+            }
+        }
+        if (action == MotionEvent.ACTION_UP){
+            joyStickX = joystickCenterX;
+            joyStickY = joystickCenterY;
         }
         return true;
     }
 
+    public boolean checkBounded(){
+        boolean boundedX = false;
+        boolean boundedY = false;
+        if (playerX >= 50 && playerX < 2050){
+            boundedX = true;
+        }
+        if (playerY >= 50 && playerY < 1000){
+            boundedY = true;
+        }
+        if (boundedX && boundedY){
+            return true;
+        }
+        return false;
+    }
+
     public void update() {
         // Update game logic here
+        playerVelocityX = joyStickX - joystickCenterX;
+        playerVelocityY = joyStickY - joystickCenterY;
+        playerX += playerVelocityX;
+        playerY += playerVelocityY;
+
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
         if (canvas != null) {
-            canvas.drawColor(Color.BLACK);
+            canvas.drawColor(Color.BLACK);// Draw buttons
+            paint.setColor(Color.WHITE);
+            canvas.drawCircle(joystickCenterX, joystickCenterY, joystickRadius, paint);
+            paint.setColor(Color.WHITE);
             canvas.drawCircle(playerX, playerY, 50, paint); // Draw player
+            paint.setColor(Color.BLACK);
+            canvas.drawCircle(joyStickX,joyStickY , 50, paint); // Draw center of joyStick
         }
     }
 }
