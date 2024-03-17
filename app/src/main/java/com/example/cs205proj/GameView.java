@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
     private final Player player = new Player(100,100);
+    private final Enemies enemies;
     private final Joystick joystick = new Joystick();
     private final Paint paint = new Paint();
     private final Rect display;
@@ -58,10 +59,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
-
-        //initialise game display and center it to player
-        gameDisplay = new GameDisplay(getScreenWidth((Activity) getContext()),
-                getScreenHeight((Activity) getContext()), player);
+        enemies = new Enemies(5, display, player);
     }
 
     @Override
@@ -97,15 +95,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(long deltaTime) {
         player.update(joystick, display);
-        gameDisplay.update();
+        //enemies.update(display);
     }
 
     @Override //draw game objects
     public void draw(Canvas canvas) {
         super.draw(canvas);
         if (canvas != null) {
-            player.draw(canvas, paint, gameDisplay);
+            // Calculate the offset to center the player on the screen
+            int offsetX = display.width() / 2 - player.x;
+            int offsetY = display.height() / 2 - player.y;
+    
+            // Save the current canvas state
+            canvas.save();
+    
+            // Translate canvas to center on player
+            canvas.translate(offsetX, offsetY);
+    
+            // Draw objects relative to the centered canvas
+            player.draw(canvas, paint);
+            enemies.draw(canvas, paint);
+    
+            // Restore the canvas state to original
+            canvas.restore();
+    
+            // Draw joystick at its fixed position
             joystick.draw(canvas, paint);
         }
     }
-}
+} 
