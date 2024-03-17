@@ -62,16 +62,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(long deltaTime) {
         player.update(joystick, display);
-        enemies.update(display);
+        //enemies.update(display);
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
         if (canvas != null) {
+            // Calculate the offset to center the player on the screen
+            int offsetX = display.width() / 2 - player.x;
+            int offsetY = display.height() / 2 - player.y;
+    
+            // Save the current canvas state
+            canvas.save();
+    
+            // Translate canvas to center on player
+            canvas.translate(offsetX, offsetY);
+    
+            // Draw objects relative to the centered canvas
             player.draw(canvas, paint);
-            joystick.draw(canvas, paint);
             enemies.draw(canvas, paint);
+    
+            // Restore the canvas state to original
+            canvas.restore();
+    
+            // Draw joystick at its fixed position
+            joystick.draw(canvas, paint);
         }
     }
-}
+} 
