@@ -6,31 +6,14 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 
 public class Joystick {
-    private final int joystickCenterX = 200;
-    private final int joystickCenterY = 2000;
-    private final int radius = 150; // Radius of the joystick
-    private final int margin = 50; // Margin between joystick and screen edges
+    final int joystickCenterX = 200;
+    final int joystickCenterY = 2000;
+    final int radius = 150; // Radius of the joystick
 
-    private int x = 200;
-    private int y = 2000;
+    int x = 200;
+    int y = 2000;
 
     public Joystick() {}
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getJoystickCenterX() {
-        return joystickCenterX;
-    }
-
-    public int getJoystickCenterY() {
-        return joystickCenterY;
-    }
 
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
