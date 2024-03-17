@@ -3,6 +3,7 @@ package com.example.cs205proj;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Insets;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -94,8 +95,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long deltaTime) {
-        player.update(joystick, display);
-        enemies.update(display);
+            player.update(joystick, display);
+            enemies.update(display);
     }
 
     @Override //draw game objects

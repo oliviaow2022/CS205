@@ -4,4 +4,5 @@
     <string name="button_down">DOWN</string>
     <string name="button_left">LEFT</string>
     <string name="button_right">RIGHT</string>
+    <string name="button_start"></string>
 </resources>
