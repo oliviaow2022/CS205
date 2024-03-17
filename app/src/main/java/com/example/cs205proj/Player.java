@@ -18,10 +18,14 @@ public class Player extends Entity {
         this.velocityY = 0;
     }
 
-    public void draw(Canvas canvas, Paint paint) {
+    public void draw(Canvas canvas, Paint paint, GameDisplay gameDisplay) {
         // player is currently a circle
         paint.setColor(Color.WHITE);
-        canvas.drawCircle(x, y, 50, paint);
+        canvas.drawCircle(
+                (float)gameDisplay.displayX(x),
+                (float)gameDisplay.displayY(y),
+                50,
+                paint);
     }
 
     public void update(Joystick joystick, Rect display) {
