@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Player extends Entity {
+    int maxV = 10;
 
     public Player(int x, int y) {
         super();
@@ -28,15 +29,15 @@ public class Player extends Entity {
         velocityY = joystick.y - joystick.joystickCenterY;
 
         if (velocityX < 0) {
-            x = Math.max(display.left + width, x + velocityX);
+            x = Math.max(display.left + width, x - Math.min(maxV,-velocityX));
         } else {
-            x = Math.min(display.right - width, x + velocityX);
+            x = Math.min(display.right - width, x + Math.min(maxV,velocityX));
         }
 
         if (velocityY < 0) {
-            y = Math.max(display.top + height, y + velocityY);
+            y = Math.max(display.top + height, y - Math.min(maxV,-velocityY));
         } else {
-            y = Math.min(display.bottom - height, y + velocityY);
+            y = Math.min(display.bottom - height, y + Math.min(maxV,velocityY));
         }
     }
 }

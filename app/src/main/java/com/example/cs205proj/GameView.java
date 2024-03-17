@@ -54,12 +54,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
-        player.update(joystick, display);
+        //player.update(joystick, display);
         return true;
     }
 
     public void update(long deltaTime) {
-
+        player.update(joystick, display);
     }
 
     @Override
