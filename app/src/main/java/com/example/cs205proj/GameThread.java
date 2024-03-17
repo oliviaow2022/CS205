@@ -8,6 +8,8 @@ public class GameThread extends Thread {
     private boolean running;
     private long targetFPS = 60;
 
+    private ElapsedTimer elapsedTimer = new ElapsedTimer();
+
     public GameThread(SurfaceHolder surfaceHolder, GameView gameView) {
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;
@@ -19,18 +21,17 @@ public class GameThread extends Thread {
 
     @Override
     public void run() {
-        long startTime;
-        long timeMillis;
-        long waitTime;
-        long targetTime = 1000 / targetFPS;
+        long targetFrameTime = 1000 / targetFPS;
 
         while (running) {
             Canvas canvas = null;
-            startTime = System.nanoTime();
             try {
-                canvas = surfaceHolder.lockCanvas();
+                canvas = surfaceHolder.lockCanvas(); // lock canvas for drawing
+                final long deltaTime = elapsedTimer.progress();
                 synchronized (surfaceHolder) {
-                    gameView.update();
+                    if (deltaTime > 0) {
+                        gameView.update(deltaTime);
+                    }
                     gameView.draw(canvas);
                 }
             } catch (Exception e) {
@@ -45,11 +46,11 @@ public class GameThread extends Thread {
                 }
             }
 
-            timeMillis = (System.nanoTime() - startTime) / 1000000;
-            waitTime = targetTime - timeMillis;
+            long updateEndTime = System.currentTimeMillis();
+            long sleepTime = targetFrameTime - (updateEndTime - elapsedTimer.getUpdateStartTime());
             try {
-                if (waitTime > 0)
-                    sleep(waitTime);
+                if (sleepTime > 0)
+                    sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -15,8 +15,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player = new Player(100,100);
     private final Joystick joystick = new Joystick();
     private final Paint paint = new Paint();
-
-    private Rect display;
+    private final Rect display;
 
     public GameView(Context context) {
         super(context);
@@ -59,7 +58,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    public void update() {
+    public void update(long deltaTime) {
 
     }
 
