@@ -13,6 +13,7 @@ import android.view.WindowMetrics;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
     private final Player player = new Player(100,100);
+    private final Enemies enemies;
     private final Joystick joystick = new Joystick();
     private final Paint paint = new Paint();
     private final Rect display;
@@ -25,6 +26,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
+        enemies = new Enemies(5, display, player);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long deltaTime) {
-
+        enemies.update(display);
     }
 
     @Override
@@ -68,6 +70,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if (canvas != null) {
             player.draw(canvas, paint);
             joystick.draw(canvas, paint);
+            enemies.draw(canvas, paint);
         }
     }
 }
