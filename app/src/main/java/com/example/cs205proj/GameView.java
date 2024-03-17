@@ -95,7 +95,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(long deltaTime) {
         player.update(joystick, display);
-        //enemies.update(display);
+        enemies.update(display);
     }
 
     @Override //draw game objects
