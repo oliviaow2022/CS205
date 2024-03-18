@@ -3,6 +3,7 @@ package com.example.cs205proj;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Insets;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -24,32 +25,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick = new Joystick();
     private final Paint paint = new Paint();
     private final Rect display;
-    private GameDisplay gameDisplay;
-
-    public static int getScreenWidth(@NonNull Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowMetrics windowMetrics = activity.getWindowManager().getCurrentWindowMetrics();
-            Insets insets = windowMetrics.getWindowInsets()
-                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());
-            return windowMetrics.getBounds().width() - insets.left - insets.right;
-        } else {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            return displayMetrics.widthPixels;
-        }
-    }
-    public static int getScreenHeight(@NonNull Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowMetrics windowMetrics = activity.getWindowManager().getCurrentWindowMetrics();
-            Insets insets = windowMetrics.getWindowInsets()
-                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());
-            return windowMetrics.getBounds().height() - insets.left - insets.right;
-        } else {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            return displayMetrics.heightPixels;
-        }
-    }
 
     public GameView(Context context) {
         super(context);
@@ -96,8 +71,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long deltaTime) {
-        player.update(joystick, display);
-        enemies.update(display);
+            player.update(joystick, display);
+            enemies.update(display);
     }
 
     @Override //draw game objects
