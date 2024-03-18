@@ -12,8 +12,8 @@ public class Player extends Entity {
         super();
         this.x = x;
         this.y = y;
-        this.width = 50;
-        this.height = 50;
+        this.width = 100;
+        this.height = 200;
         this.velocityX = 0;
         this.velocityY = 0;
     }

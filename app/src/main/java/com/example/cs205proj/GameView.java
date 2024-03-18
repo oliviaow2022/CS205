@@ -1,22 +1,14 @@
 package com.example.cs205proj;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Insets;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
-
-import androidx.annotation.NonNull;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
@@ -25,6 +17,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick = new Joystick();
     private final Paint paint = new Paint();
     private final Rect display;
+    private final PlayerWalkingState playerWalkingState;
 
     public GameView(Context context) {
         super(context);
@@ -35,6 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
         enemies = new Enemies(5, display, player);
+        playerWalkingState = new PlayerWalkingState(context, player);
     }
 
     @Override
@@ -64,13 +58,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
-        //player.update(joystick, display);
         return true;
     }
 
     public void update(long deltaTime) {
-            player.update(joystick, display);
-            enemies.update(display);
+        player.update(joystick, display);
+        enemies.update(display);
+        playerWalkingState.update(deltaTime);
     }
 
     @Override //draw game objects
@@ -88,7 +82,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.translate(offsetX, offsetY);
     
             // Draw objects relative to the centered canvas
-            player.draw(canvas, paint);
+            // player.draw(canvas, paint);
+            playerWalkingState.draw(canvas, paint);
             enemies.draw(canvas, paint);
     
             // Restore the canvas state to original
