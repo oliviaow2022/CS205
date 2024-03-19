@@ -6,8 +6,8 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 
 public class Joystick {
-    final int joystickCenterX = 200;
-    final int joystickCenterY = 2000;
+    int joystickCenterX = 200;
+    int joystickCenterY = 2000;
     final int radius = 150; // Radius of the joystick
 
     int x = 200;
@@ -36,8 +36,10 @@ public class Joystick {
         return true;
     }
 
-    public void draw(Canvas canvas, Paint paint) {
+    public void draw(Canvas canvas, Paint paint, int height) {
         // player is currently a circle
+        joystickCenterX = 50 + radius;
+        joystickCenterY = height - 50 - radius;
         paint.setColor(Color.WHITE);
         canvas.drawCircle(joystickCenterX, joystickCenterY, radius, paint);
         paint.setColor(Color.BLACK);

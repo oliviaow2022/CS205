@@ -95,9 +95,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     
             // Restore the canvas state to original
             canvas.restore();
-    
+            int canvasHeight = getHeight();
             // Draw joystick at its fixed position
-            joystick.draw(canvas, paint);
+            joystick.draw(canvas, paint, canvasHeight);
         }
     }
 } 
