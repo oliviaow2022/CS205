@@ -16,8 +16,6 @@ public class TitleScreen extends AppCompatActivity {
         setContentView(R.layout.activity_title_screen);
         Button buttonStart = findViewById(R.id.button_start);
 
-        // Background GIF
-
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
