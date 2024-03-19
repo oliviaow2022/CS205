@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Bundle;
 
 public class Player extends Entity {
     int maxV = 10;
@@ -16,6 +17,17 @@ public class Player extends Entity {
         this.height = 50;
         this.velocityX = 0;
         this.velocityY = 0;
+    }
+
+    public void saveInstanceState(Bundle outState) {
+        outState.putInt("player_x", x);
+        outState.putInt("player_y", y);
+    }
+
+    // Restore player state from a Bundle
+    public void restoreInstanceState(Bundle savedInstanceState) {
+        x = savedInstanceState.getInt("player_x");
+        y = savedInstanceState.getInt("player_y");
     }
 
     public void draw(Canvas canvas, Paint paint) {
