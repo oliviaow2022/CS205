@@ -40,9 +40,16 @@ public class Joystick {
         // player is currently a circle
         joystickCenterX = 50 + radius;
         joystickCenterY = height - 50 - radius;
+        float distanceX = x - joystickCenterX;
+        float distanceY = y - joystickCenterY;
+        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        if (distance > radius){
+            x = joystickCenterX;
+            y = joystickCenterY;
+        }
         paint.setColor(Color.WHITE);
         canvas.drawCircle(joystickCenterX, joystickCenterY, radius, paint);
         paint.setColor(Color.BLACK);
-        canvas.drawCircle(x, y,50, paint); // Draw center of joyStick
+        canvas.drawCircle(x,y,50, paint); // Draw center of joyStick
     }
 }
