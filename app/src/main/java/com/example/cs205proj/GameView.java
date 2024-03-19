@@ -20,14 +20,15 @@ import androidx.annotation.NonNull;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
-    private final Player player = new Player(100,100);
+    private final Player player;
     private final Enemies enemies;
     private final Joystick joystick = new Joystick();
     private final Paint paint = new Paint();
     private final Rect display;
 
-    public GameView(Context context) {
+    public GameView(Context context, Player player) {
         super(context);
+        this.player = player;
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
 
@@ -47,6 +48,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        display.set(0, 0, width, height);
+
     }
 
     @Override
