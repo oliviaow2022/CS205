@@ -1,5 +1,6 @@
 package com.example.cs205proj;
 
+import java.util.*;
 import static java.lang.Thread.sleep;
 
 import android.graphics.Canvas;
@@ -9,6 +10,8 @@ import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
 public class Enemy extends Entity implements Runnable{
+    Random random = new Random();
+    int distanceThreshold = random.nextInt(150) + random.nextInt(300);  //enemies dont converge into one
     int MAX_SPEED = 10;
 //    int VISIBILITY = 2000;
     int VISIBILITY = (int)Double.POSITIVE_INFINITY;
@@ -45,7 +48,7 @@ public class Enemy extends Entity implements Runnable{
         double directionX = distanceToPlayerX / distanceToPlayer;
         double directionY = distanceToPlayerY / distanceToPlayer;
 
-        if (distanceToPlayer > 0 && distanceToPlayer < VISIBILITY){
+        if (distanceToPlayer > distanceThreshold && distanceToPlayer < VISIBILITY){
             velocityX = (int) (directionX * MAX_SPEED);
             velocityY = (int) (directionY * MAX_SPEED);
         }else{
