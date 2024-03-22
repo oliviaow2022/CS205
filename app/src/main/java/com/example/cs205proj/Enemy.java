@@ -17,7 +17,8 @@ public class Enemy extends Entity implements Runnable{
     boolean isAlive = true;
     int health = 100;
     private final Player player;
-    public Enemy(int x, int y, Player player) {
+    private final Score score;
+    public Enemy(int x, int y, Player player, Score score) {
         super();
         this.x = x;
         this.y = y;
@@ -26,6 +27,7 @@ public class Enemy extends Entity implements Runnable{
         this.velocityX = 0;
         this.velocityY = 0;
         this.player = player;
+        this.score = score;
     }
     public int getX(){
         return this.x;
@@ -70,9 +72,11 @@ public class Enemy extends Entity implements Runnable{
     @Override
     public void run() {
         while (isAlive) {
-            if (Math.abs(player.x - this.x) < 5 && Math.abs(player.y - this.y) < 5){
+//            System.out.println(Math.abs(player.x - this.x)+ " ," + Math.abs(player.y - this.y));
+            if (Math.abs(player.x - this.x) < 200 && Math.abs(player.y - this.y) < 200){
                 isAlive = false;
             }
         }
+        score.increment();
     }
 }

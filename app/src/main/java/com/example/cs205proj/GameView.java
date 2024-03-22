@@ -25,6 +25,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick;
     private final Paint paint = new Paint();
     private final Rect display;
+    private final Score score;
 
     public GameView(Context context, Player player) {
         super(context);
@@ -36,7 +37,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
-        enemies = new Enemies(5, display, player);
+        score = new Score(context);
+        enemies = new Enemies(5, display, player, score);
     }
 
     @Override
@@ -96,12 +98,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // Draw objects relative to the centered canvas
             player.draw(canvas, paint);
             enemies.draw(canvas, paint);
-    
             // Restore the canvas state to original
             canvas.restore();
             int canvasHeight = getHeight();
             // Draw joystick at its fixed position
             joystick.draw(canvas, paint, canvasHeight);
+            score.draw(canvas, paint);
         }
     }
 } 
