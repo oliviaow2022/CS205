@@ -9,7 +9,7 @@ public class Joystick {
     int joystickCenterX = 200;
     int joystickCenterY = 2000;
     final int radius = 150; // Radius of the joystick
-
+    int Height;
     int x = 200;
     int y = 2000;
 
@@ -38,6 +38,7 @@ public class Joystick {
 
     public void draw(Canvas canvas, Paint paint, int height) {
         // player is currently a circle
+        this.Height = height;
         joystickCenterX = 50 + radius;
         joystickCenterY = height - 50 - radius;
         float distanceX = x - joystickCenterX;
@@ -51,5 +52,14 @@ public class Joystick {
         canvas.drawCircle(joystickCenterX, joystickCenterY, radius, paint);
         paint.setColor(Color.BLACK);
         canvas.drawCircle(x,y,50, paint); // Draw center of joyStick
+    }
+
+    public float[] getJoystickOffset(){
+        joystickCenterX = 50 + radius;
+        joystickCenterY = Height - 50 - radius;
+        float distanceX = x - joystickCenterX;
+        float distanceY = y - joystickCenterY;
+        float[] result = {distanceX,distanceY};
+        return result;
     }
 }
