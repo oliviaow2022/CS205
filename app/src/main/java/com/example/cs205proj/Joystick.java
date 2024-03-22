@@ -49,13 +49,13 @@ public class Joystick {
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
         if (action == MotionEvent.ACTION_MOVE){
-            if (distance <= radius - 50){
+            if (distance <= radius - 25){
                 x = (int) touchX;
                 y = (int) touchY;
             } else {
                 double angle = Math.atan2(distanceY, distanceX);
-                x = (int) (joystickCenterX + (radius - 50) * Math.cos(angle));
-                y = (int) (joystickCenterY + (radius - 50) * Math.sin(angle));
+                x = (int) (joystickCenterX + (radius - 25) * Math.cos(angle));
+                y = (int) (joystickCenterY + (radius - 25) * Math.sin(angle));
             }
         }
         if (action == MotionEvent.ACTION_UP){
@@ -77,10 +77,6 @@ public class Joystick {
             x = joystickCenterX;
             y = joystickCenterY;
         }
-//        paint.setColor(Color.WHITE);
-//        canvas.drawCircle(joystickCenterX, joystickCenterY, radius, paint);
-//        paint.setColor(Color.BLACK);
-//        canvas.drawCircle(x,y,75, paint); // Draw center of joyStick
 
         // Draw joystick sprite
         ballDstRect.set(
@@ -103,8 +99,6 @@ public class Joystick {
 
 
     public float[] getJoystickOffset(){
-        joystickCenterX = 50 + radius;
-        joystickCenterY = Height - 50 - radius;
         float distanceX = x - joystickCenterX;
         float distanceY = y - joystickCenterY;
         float[] result = {distanceX,distanceY};
