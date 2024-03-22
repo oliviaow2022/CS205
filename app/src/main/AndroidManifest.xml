@@ -27,6 +27,11 @@
             android:exported="true"
             android:configChanges="orientation|screenSize">
         </activity>
+        <activity
+            android:name=".GameOver"
+            android:exported="true"
+            android:configChanges="orientation|screenSize">
+        </activity>
     </application>
 
 </manifest>
