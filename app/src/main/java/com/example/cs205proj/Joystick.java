@@ -17,8 +17,8 @@ public class Joystick {
     int joystickCenterY;
     final int radius = 150; // Radius of the joystick
     int Height;
-    int x = 500;
-    int y = 2000;
+    int x = joystickCenterX;
+    int y = joystickCenterY;
 
     Bitmap pad;
     Rect padSrcRect, padDstRect;
@@ -68,7 +68,7 @@ public class Joystick {
     public void draw(Canvas canvas, Paint paint, int height) {
         // player is currently a circle
         this.Height = height;
-        joystickCenterX = 50 + 3*radius;
+        joystickCenterX = (int)(50 + 2*radius);
         joystickCenterY = (int)(height - 50 - 1.5*radius);
         float distanceX = x - joystickCenterX;
         float distanceY = y - joystickCenterY;
