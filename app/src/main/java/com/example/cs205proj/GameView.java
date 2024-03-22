@@ -22,13 +22,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
     private final Player player;
     private final Enemies enemies;
-    private final Joystick joystick = new Joystick();
+    private final Joystick joystick;
     private final Paint paint = new Paint();
     private final Rect display;
 
     public GameView(Context context, Player player) {
         super(context);
         this.player = player;
+        joystick = new Joystick(context);
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
 
