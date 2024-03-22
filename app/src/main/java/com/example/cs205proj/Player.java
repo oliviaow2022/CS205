@@ -17,6 +17,8 @@ public class Player extends Entity {
         this.height = 200;
         this.velocityX = 0;
         this.velocityY = 0;
+        this.health = 4;
+        this.maxHealth = 5;
     }
 
     public void saveInstanceState(Bundle outState) {

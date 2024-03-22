@@ -1,6 +1,8 @@
 package com.example.cs205proj;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -19,6 +21,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Rect display;
     private final PlayerWalkingState playerWalkingState;
 
+    private PlayerHealth playerHealth;
     public GameView(Context context, Player player) {
         super(context);
         this.player = player;
@@ -30,6 +33,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         display = windowMetrics.getBounds();
         enemies = new Enemies(5, display, player);
         playerWalkingState = new PlayerWalkingState(context, player);
+        playerHealth = new PlayerHealth(context, player);
     }
 
     @Override
@@ -93,9 +97,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     
             // Restore the canvas state to original
             canvas.restore();
+
+            int canvasWidth = getWidth();
             int canvasHeight = getHeight();
             // Draw joystick at its fixed position
             joystick.draw(canvas, paint, canvasHeight);
+            playerHealth.draw(canvas, paint, canvasWidth);
         }
     }
 } 

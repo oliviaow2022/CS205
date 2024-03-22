@@ -21,17 +21,15 @@ public class Animation {
             return;
         }
 
-        if (frames.length > 1) {
-            timer += deltaTime;
+        timer += deltaTime;
 
-            if (timer > interval) {
-                timer %= interval;
+        if (timer > interval) {
+            timer %= interval;
 
-                currentFrame = Math.max(0, (currentFrame + 1) % (frames.length));
+            currentFrame = Math.max(0, (currentFrame + 1) % (frames.length));
 
-                if (currentFrame == 1) {
-                    timesPlayed++;
-                }
+            if (currentFrame == 1) {
+                timesPlayed++;
             }
         }
     }

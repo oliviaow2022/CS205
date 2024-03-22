@@ -13,6 +13,9 @@ public class PlayerWalkingState {
     final int frameHeight = 32;
     final int frameWidth = 16;
     Animation downAnimation;
+
+    Bitmap frame2;
+    Bitmap scaledBitmap;
     public PlayerWalkingState(Context context, Player player) {
         this.player = player;
 
@@ -23,7 +26,9 @@ public class PlayerWalkingState {
             downFrames[i] = Bitmap.createBitmap(spriteSheet, i*frameWidth, 0, frameWidth, frameHeight); // (Bitmap, x, y, width, height)
         }
 
-        downAnimation = new Animation(downFrames, true, 0.15);
+        downAnimation = new Animation(downFrames, true, 2);
+        // frame2 = Bitmap.createBitmap(spriteSheet, 16, 32, 16, 32); // (Bitmap, x, y, width, height)
+        // scaledBitmap = Bitmap.createScaledBitmap(frame2, player.width, player.height,true);
     }
 
     public void update(long deltaTime) {
