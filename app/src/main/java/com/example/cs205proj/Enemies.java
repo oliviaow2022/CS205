@@ -19,15 +19,17 @@ public class Enemies {
     int number;
     private final Player player;
     Rect display;
-    public Enemies(int number, Rect display, Player player) {
+    private final Score score;
+    public Enemies(int number, Rect display, Player player, Score score) {
         this.display = display;
         this.number = number;
         this.player = player;
+        this.score = score;
         enemies = new EnemiesThreadPool(number, number, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         for (int i = 0; i < number; i++) {
             int x_pos = (int) Math.round(Math.random() * display.width());
             int y_pos = (int) Math.round(Math.random() * display.height());
-            enemies.executeEnemy(new Enemy(x_pos, y_pos, player));
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score));
         }
     }
     public void draw(Canvas canvas, Paint paint) {
@@ -47,7 +49,7 @@ public class Enemies {
         if (enemies.hasAvailableSpot()) {
             int x_pos = (int) Math.round(Math.random() * display.width());
             int y_pos = (int) Math.round(Math.random() * display.height());
-            enemies.executeEnemy(new Enemy(x_pos, y_pos, player));
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score));
         }
     }
 }
