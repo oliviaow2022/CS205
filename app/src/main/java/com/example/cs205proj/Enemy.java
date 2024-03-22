@@ -1,13 +1,21 @@
 package com.example.cs205proj;
 
+import java.util.*;
+import static java.lang.Thread.sleep;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.SurfaceHolder;
 
-public class Enemy extends Entity{
+public class Enemy extends Entity implements Runnable{
+    Random random = new Random();
+    int distanceThreshold = random.nextInt(150) + random.nextInt(300);  //enemies dont converge into one
     int MAX_SPEED = 10;
-    int VISIBILITY = 2000;
+//    int VISIBILITY = 2000;
+    int VISIBILITY = (int)Double.POSITIVE_INFINITY;
+    boolean isAlive = true;
     private final Player player;
     public Enemy(int x, int y, Player player) {
         super();
@@ -19,14 +27,19 @@ public class Enemy extends Entity{
         this.velocityY = 0;
         this.player = player;
     }
-
-    public void draw(Canvas canvas, Paint paint) {
-        // player is currently a circle
-        paint.setColor(Color.RED);
-        canvas.drawCircle(x, y, 50, paint);
+    public int getX(){
+        return this.x;
     }
 
-    public void update(Rect display) {
+    public int getY(){
+        return this.y;
+    }
+//    public void draw(Canvas canvas, Paint paint) {
+//        paint.setColor(Color.RED);
+//        canvas.drawCircle(x, y, 50, paint);
+//    }
+
+    public void update() {
         double distanceToPlayerX = player.x - this.x;
         double distanceToPlayerY = player.y - this.y;
 
@@ -35,7 +48,7 @@ public class Enemy extends Entity{
         double directionX = distanceToPlayerX / distanceToPlayer;
         double directionY = distanceToPlayerY / distanceToPlayer;
 
-        if (distanceToPlayer > 0 && distanceToPlayer < VISIBILITY){
+        if (distanceToPlayer > distanceThreshold && distanceToPlayer < VISIBILITY){
             velocityX = (int) (directionX * MAX_SPEED);
             velocityY = (int) (directionY * MAX_SPEED);
         }else{
@@ -52,5 +65,14 @@ public class Enemy extends Entity{
                 Math.pow(enemy.x - player.x,2) +
                 Math.pow(enemy.y - player.y,2)
         );
+    }
+
+    @Override
+    public void run() {
+        while (isAlive) {
+            if (Math.abs(player.x - this.x) < 5 && Math.abs(player.y - this.y) < 5){
+                isAlive = false;
+            }
+        }
     }
 }

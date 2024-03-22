@@ -5,30 +5,50 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 public class Enemies {
-    Enemy [] enemies;
+
+//    REQUIREMENT: EACH ENEMY IS A THREAD, THREAD POOL CURRENT SIZE = 5
+    EnemiesThreadPool enemies;
     int number;
     private final Player player;
+    Rect display;
     public Enemies(int number, Rect display, Player player) {
-        this.enemies = new Enemy[number];
+        this.display = display;
         this.number = number;
         this.player = player;
+        enemies = new EnemiesThreadPool(number, number, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         for (int i = 0; i < number; i++) {
-            int x_pos = (int)Math.round(Math.random() * display.width());
-            int y_pos = (int)Math.round(Math.random() * display.height());
-            this.enemies[i] = new Enemy(x_pos, y_pos, player);
+            int x_pos = (int) Math.round(Math.random() * display.width());
+            int y_pos = (int) Math.round(Math.random() * display.height());
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player));
+        }
+    }
+    public void draw(Canvas canvas, Paint paint) {
+        Set<Enemy> activeEnemies = enemies.getActiveTasks();
+        paint.setColor(Color.RED);
+        for (Enemy enemy : activeEnemies) {
+//            System.out.println("enemies Draw" + enemy.getX());
+            canvas.drawCircle(enemy.getX(), enemy.getY(), 50, paint);
         }
     }
 
-    public void draw(Canvas canvas, Paint paint) {
-        // player is currently a circle
-        for (int i = 0; i < number; i++) {
-            enemies[i].draw(canvas, paint);
+    public void update(Rect display) {
+        Set<Enemy> activeEnemies = enemies.getActiveTasks();
+        for (Enemy enemy : activeEnemies) {
+            enemy.update();
         }
-    }
-    public void update(Rect display){
-        for (int i = 0; i < number; i++) {
-            enemies[i].update(display);
+        if (enemies.hasAvailableSpot()) {
+            int x_pos = (int) Math.round(Math.random() * display.width());
+            int y_pos = (int) Math.round(Math.random() * display.height());
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player));
         }
     }
 }
+

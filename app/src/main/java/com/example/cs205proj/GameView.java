@@ -12,15 +12,16 @@ import android.view.WindowMetrics;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
-    private final Player player = new Player(100,100);
+    private final Player player;
     private final Enemies enemies;
     private final Joystick joystick = new Joystick();
     private final Paint paint = new Paint();
     private final Rect display;
     private final PlayerWalkingState playerWalkingState;
 
-    public GameView(Context context) {
+    public GameView(Context context, Player player) {
         super(context);
+        this.player = player;
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
 
@@ -35,10 +36,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         gameThread.setRunning(true);
         gameThread.start();
+//        enemies.setRunning(true);
+//        enemies.start();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        display.set(0, 0, width, height);
+
     }
 
     @Override
@@ -88,9 +93,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     
             // Restore the canvas state to original
             canvas.restore();
-    
+            int canvasHeight = getHeight();
             // Draw joystick at its fixed position
-            joystick.draw(canvas, paint);
+            joystick.draw(canvas, paint, canvasHeight);
         }
     }
 } 
