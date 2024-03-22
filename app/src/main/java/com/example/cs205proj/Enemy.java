@@ -13,9 +13,9 @@ public class Enemy extends Entity implements Runnable{
     Random random = new Random();
     int distanceThreshold = random.nextInt(150) + random.nextInt(300);  //enemies dont converge into one
     int MAX_SPEED = 10;
-//    int VISIBILITY = 2000;
     int VISIBILITY = (int)Double.POSITIVE_INFINITY;
     boolean isAlive = true;
+    int health = 100;
     private final Player player;
     private final Score score;
     public Enemy(int x, int y, Player player, Score score) {
