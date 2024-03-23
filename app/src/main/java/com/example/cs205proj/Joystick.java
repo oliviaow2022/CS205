@@ -17,7 +17,7 @@ public class Joystick {
     int joystickCenterY;
     final int radius = 150; // Radius of the joystick
     int Height;
-    int x = joystickCenterX;
+    int x = joystickCenterX;  //this is the varying coordinates of the joystick itself
     int y = joystickCenterY;
 
     Bitmap pad;

@@ -76,4 +76,8 @@ public class Player extends Entity {
     public int getY(){
         return this.y;
     }
+
+    public hitBox getHitbox(){
+        return this.playerHitBox;
+    }
 }

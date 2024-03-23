@@ -26,11 +26,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Paint paint = new Paint();
     private final Rect display;
     private final Score score;
+    private final attackButton playerAttackButton;
 
     public GameView(Context context, Player player) {
         super(context);
         this.player = player;
         joystick = new Joystick(context);
+        hitBox playerHitbox = player.getHitbox();
+        playerAttackButton = new attackButton(playerHitbox);
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
 
@@ -73,6 +76,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
         //player.update(joystick, display);
+        playerAttackButton.onTouchEvent(event);
         return true;
     }
 
@@ -103,6 +107,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int canvasHeight = getHeight();
             // Draw joystick at its fixed position
             joystick.draw(canvas, paint, canvasHeight);
+            playerAttackButton.draw(canvas, paint, canvasHeight);
             score.draw(canvas, paint);
         }
     }

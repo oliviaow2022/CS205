@@ -10,6 +10,8 @@ public class hitBox extends Entity {
     private Rect rect;
     private Player thePlayer;
     private Joystick theJoyStick;
+    long timeActivated;
+    boolean isActivated = false;
 
     public hitBox(Player player) {
         super();
@@ -26,6 +28,9 @@ public class hitBox extends Entity {
     public void draw(Canvas canvas, Paint paint) {
         // player is currently a circle
         paint.setColor(Color.BLUE);
+        if (this.isActivated == true){
+            paint.setColor(Color.YELLOW);
+        }
         canvas.drawRect(rect, paint);
     }
 
@@ -56,6 +61,18 @@ public class hitBox extends Entity {
         // Update hitbox position
         this.x = offsetX;
         this.y = offsetY;
+        if (System.currentTimeMillis() - timeActivated >= 300){
+            if (isActivated == true){
+                System.out.println("HITBOX DEACTIVATED");
+            }
+            isActivated = false;
+        }
         rect.set(x, y, x + width, y + height);
+    }
+
+    public void activateHitbox(){
+        timeActivated = System.currentTimeMillis();
+        isActivated = true;
+        System.out.println("HITBOX ACTIVATED");
     }
 }
