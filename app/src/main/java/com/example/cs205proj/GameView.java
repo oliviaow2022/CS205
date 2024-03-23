@@ -12,11 +12,14 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
 
 import androidx.annotation.NonNull;
+
+import com.example.cs205proj.ui.PauseGameButton;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
@@ -25,6 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick = new Joystick();
     private final Paint paint = new Paint();
     private final Rect display;
+    private final PauseGameButton pauseButton;
 
     public GameView(Context context, Player player) {
         super(context);
@@ -36,6 +40,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
         enemies = new Enemies(5, display, player);
+
+        pauseButton = new PauseGameButton(context);
     }
 
     @Override
@@ -49,7 +55,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         display.set(0, 0, width, height);
-
+        pauseButton.setDimensions(width, height);
     }
 
     @Override
@@ -69,6 +75,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
+        pauseButton.onTouchEvent(event);
         //player.update(joystick, display);
         return true;
     }
@@ -101,6 +108,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int canvasHeight = getHeight();
             // Draw joystick at its fixed position
             joystick.draw(canvas, paint, canvasHeight);
+            pauseButton.draw(canvas);
         }
     }
 } 
