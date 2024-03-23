@@ -17,8 +17,10 @@ public class Joystick {
     int joystickCenterY;
     final int radius = 150; // Radius of the joystick
     int Height;
+    int Width;
     int x = joystickCenterX;  //this is the varying coordinates of the joystick itself
     int y = joystickCenterY;
+    boolean withinCircle = false;
 
     Bitmap pad;
     Rect padSrcRect, padDstRect;
@@ -49,10 +51,11 @@ public class Joystick {
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
         if (action == MotionEvent.ACTION_MOVE){
-            if (distance <= radius - 25){
+            if (distance <= radius){
                 x = (int) touchX;
                 y = (int) touchY;
-            } else {
+                withinCircle = true;
+            } else if (withinCircle){
                 double angle = Math.atan2(distanceY, distanceX);
                 x = (int) (joystickCenterX + (radius - 25) * Math.cos(angle));
                 y = (int) (joystickCenterY + (radius - 25) * Math.sin(angle));
@@ -61,19 +64,20 @@ public class Joystick {
         if (action == MotionEvent.ACTION_UP){
             x = joystickCenterX;
             y = joystickCenterY;
+            withinCircle = false;
         }
         return true;
     }
 
-    public void draw(Canvas canvas, Paint paint, int height) {
+    public void draw(Canvas canvas, Paint paint, int height, int width) {
         // player is currently a circle
         this.Height = height;
-        joystickCenterX = (int)(50 + 2*radius);
+        joystickCenterX = (int)(2*radius);
         joystickCenterY = (int)(height - 50 - 1.5*radius);
         float distanceX = x - joystickCenterX;
         float distanceY = y - joystickCenterY;
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-        if (distance > radius){
+        if (distance > radius){ //this resets position of joystick after hand is let go
             x = joystickCenterX;
             y = joystickCenterY;
         }

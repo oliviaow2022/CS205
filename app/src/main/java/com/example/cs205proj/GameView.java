@@ -18,14 +18,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Paint paint = new Paint();
     private final Rect display;
     private final Score score;
-    private final attackButton playerAttackButton;
+    private final AttackButton playerAttackButton;
 
     public GameView(Context context, Player player) {
         super(context);
         this.player = player;
         joystick = new Joystick(context);
         Hitbox playerHitbox = player.getHitbox();
-        playerAttackButton = new attackButton(playerHitbox);
+        playerAttackButton = new AttackButton(playerHitbox);
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
 
@@ -97,9 +97,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // Restore the canvas state to original
             canvas.restore();
             int canvasHeight = getHeight();
+            int canvasWidth = getWidth();
             // Draw joystick at its fixed position
-            joystick.draw(canvas, paint, canvasHeight);
-            playerAttackButton.draw(canvas, paint, canvasHeight);
+            joystick.draw(canvas, paint, canvasHeight, canvasWidth);
+            playerAttackButton.draw(canvas, paint, canvasHeight, canvasWidth);
             score.draw(canvas, paint);
         }
     }
