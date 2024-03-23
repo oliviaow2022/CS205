@@ -8,17 +8,17 @@ import android.os.Bundle;
 
 public class Player extends Entity {
     int maxV = 10;
-    hitBox playerHitBox = null;
+    Hitbox playerHitbox = null;
 
     public Player(int x, int y) {
         super();
         this.x = x;
         this.y = y;
-        this.width = 50;
-        this.height = 50;
+        this.width = 50; //current width of player
+        this.height = 50; //current height of player
         this.velocityX = 0;
         this.velocityY = 0;
-        playerHitBox = new hitBox(this);
+        playerHitbox = new Hitbox(this);
     }
 
     public void saveInstanceState(Bundle outState) {
@@ -40,7 +40,7 @@ public class Player extends Entity {
                 y,
                 50,
                 paint);
-        playerHitBox.draw(canvas, paint);
+        playerHitbox.draw(canvas, paint);
     }
 
     public void update(Joystick joystick, Rect display) {
@@ -58,7 +58,7 @@ public class Player extends Entity {
         } else {
             y = Math.min(display.bottom - height, y + Math.min(maxV,velocityY));
         }
-        playerHitBox.update(joystick);
+        playerHitbox.update(joystick);
     }
 
     public int getVelocityX(){
@@ -77,7 +77,7 @@ public class Player extends Entity {
         return this.y;
     }
 
-    public hitBox getHitbox(){
-        return this.playerHitBox;
+    public Hitbox getHitbox(){
+        return this.playerHitbox;
     }
 }

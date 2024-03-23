@@ -1,22 +1,14 @@
 package com.example.cs205proj;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Insets;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
-
-import androidx.annotation.NonNull;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
@@ -32,7 +24,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         this.player = player;
         joystick = new Joystick(context);
-        hitBox playerHitbox = player.getHitbox();
+        Hitbox playerHitbox = player.getHitbox();
         playerAttackButton = new attackButton(playerHitbox);
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);

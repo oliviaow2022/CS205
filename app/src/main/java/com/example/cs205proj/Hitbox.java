@@ -4,16 +4,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Bundle;
 
-public class hitBox extends Entity {
+public class Hitbox extends Entity {
     private Rect rect;
     private Player thePlayer;
     private Joystick theJoyStick;
     long timeActivated;
     boolean isActivated = false;
 
-    public hitBox(Player player) {
+    public Hitbox(Player player) {
         super();
         thePlayer = player;
         rect = new Rect(x, y, x + width, y + height); // create rectangle object for drawing and collision

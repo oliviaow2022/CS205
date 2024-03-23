@@ -1,26 +1,19 @@
 package com.example.cs205proj;
 
-import static java.security.AccessController.getContext;
-
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 
 public class attackButton {
     int buttonCenterX;
     int buttonCenterY;
     final int radius = 100; // Radius of the attack button
-    hitBox playerHitbox;
+    Hitbox playerHitbox;
     int Height;
 
 
-    public attackButton(hitBox insertedHitbox) {
+    public attackButton(Hitbox insertedHitbox) {
         this.playerHitbox = insertedHitbox;
     }
 
@@ -46,7 +39,7 @@ public class attackButton {
         this.Height = height;
         buttonCenterX = (int)(1700 + 2*radius);
         buttonCenterY = (int)(height - 50 - 1.5*radius);
-        paint.setColor(Color.GREEN);
+        paint.setColor(Color.GREEN); //Placeholder color
         canvas.drawCircle(buttonCenterX, buttonCenterY, radius, paint);
     }
 
