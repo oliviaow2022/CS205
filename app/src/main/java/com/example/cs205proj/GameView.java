@@ -16,24 +16,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
     private final Player player;
     private final Enemies enemies;
-    private final Joystick joystick = new Joystick();
+    private final Joystick joystick;
     private final Paint paint = new Paint();
     private final Rect display;
     private final PlayerWalkingState playerWalkingState;
+    private final Score score;
+    private final AttackButton playerAttackButton;
 
     private PlayerHealth playerHealth;
     public GameView(Context context, Player player) {
         super(context);
         this.player = player;
+        joystick = new Joystick(context);
+        Hitbox playerHitbox = player.getHitbox();
+        playerAttackButton = new AttackButton(playerHitbox);
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
-        enemies = new Enemies(5, display, player);
+
         playerWalkingState = new PlayerWalkingState(context, player);
         playerHealth = new PlayerHealth(context, player);
+
+        score = new Score(context);
+        enemies = new Enemies(5, display, player, score);
     }
 
     @Override
@@ -60,13 +68,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            retry = false;
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
+        playerAttackButton.onTouchEvent(event);
         return true;
     }
 
@@ -94,15 +102,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // player.draw(canvas, paint);
             playerWalkingState.draw(canvas, paint);
             enemies.draw(canvas, paint);
-    
             // Restore the canvas state to original
             canvas.restore();
 
-            int canvasWidth = getWidth();
             int canvasHeight = getHeight();
-            // Draw joystick at its fixed position
-            joystick.draw(canvas, paint, canvasHeight);
+            int canvasWidth = getWidth();
+
             playerHealth.draw(canvas, paint, canvasWidth);
+            joystick.draw(canvas, paint, canvasHeight, canvasWidth);
+            playerAttackButton.draw(canvas, paint, canvasHeight, canvasWidth);
+            score.draw(canvas, paint);
         }
     }
 } 
