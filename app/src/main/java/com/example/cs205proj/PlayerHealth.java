@@ -15,8 +15,10 @@ public class PlayerHealth {
 
     private final Player player;
 
-    public PlayerHealth(Context context, Player player) {
+    public PlayerHealth(Player player) {
         this.player = player;
+
+        Context context = GlobalContext.getInstance().getContext();
         Bitmap heartsSpriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.hearts);
         Bitmap emptyHeart = Bitmap.createBitmap(heartsSpriteSheet, 2, 0, 43, 43);
         Bitmap fullHeart = Bitmap.createBitmap(heartsSpriteSheet, 178, 0, 43, 43);
@@ -24,7 +26,9 @@ public class PlayerHealth {
         scaledEmptyHeart = Bitmap.createScaledBitmap(emptyHeart, 100, 100, true);
     }
 
-    public void draw(Canvas canvas, Paint paint, int canvasWidth) {
+    public void draw(Canvas canvas, Paint paint) {
+        int canvasWidth = GlobalContext.getInstance().getCanvasWidth();
+
         this.x = canvasWidth - 525;
         this.y = 30;
 

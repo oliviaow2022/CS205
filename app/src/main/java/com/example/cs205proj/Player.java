@@ -8,7 +8,10 @@ import android.os.Bundle;
 
 public class Player extends Entity {
     int maxV = 10;
-    Hitbox playerHitbox = null;
+    String direction = "down";
+    Hitbox playerHitbox;
+    // PlayerStateMachine playerStateMachine;
+    PlayerHealth playerHealth;
 
     public Player(int x, int y) {
         super();
@@ -18,11 +21,13 @@ public class Player extends Entity {
         this.health = 4;
         this.maxHealth = 5;
 
-        this.width = 50; //current width of player
-        this.height = 50; //current height of player
+        this.width = 100; //current width of player
+        this.height = 200; //current height of player
         this.velocityX = 0;
         this.velocityY = 0;
         playerHitbox = new Hitbox(this);
+        // playerStateMachine = new PlayerStateMachine(this);
+        playerHealth = new PlayerHealth(this);
     }
 
     public void saveInstanceState(Bundle outState) {
@@ -37,14 +42,9 @@ public class Player extends Entity {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        // player is currently a circle
-        paint.setColor(Color.WHITE);
-        canvas.drawCircle(
-                x,
-                y,
-                50,
-                paint);
+        // playerHealth.draw(canvas, paint);
         playerHitbox.draw(canvas, paint);
+        // playerStateMachine.draw(canvas, paint);
     }
 
     public void update(Joystick joystick, Rect display) {
@@ -52,14 +52,18 @@ public class Player extends Entity {
         velocityY = joystick.y - joystick.joystickCenterY;
 
         if (velocityX < 0) {
+            direction = "left";
             x = Math.max(display.left + width, x - Math.min(maxV,-velocityX));
         } else {
+            direction = "right";
             x = Math.min(display.right - width, x + Math.min(maxV,velocityX));
         }
 
         if (velocityY < 0) {
+            direction = "up";
             y = Math.max(display.top + height, y - Math.min(maxV,-velocityY));
         } else {
+            direction = "down";
             y = Math.min(display.bottom - height, y + Math.min(maxV,velocityY));
         }
         playerHitbox.update(joystick);
