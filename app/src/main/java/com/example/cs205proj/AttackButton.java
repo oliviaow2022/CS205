@@ -29,7 +29,6 @@ public class AttackButton {
         if (action == MotionEvent.ACTION_DOWN){
             if (distance <= radius){
                 playerHitbox.activateHitbox();
-                System.out.println("ATTACK");
             } 
         }
         return true;
