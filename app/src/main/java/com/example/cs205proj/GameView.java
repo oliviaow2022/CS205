@@ -1,8 +1,6 @@
 package com.example.cs205proj;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -19,11 +17,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Joystick joystick;
     private final Paint paint = new Paint();
     private final Rect display;
-    private final PlayerWalkingState playerWalkingState;
     private final Score score;
     private final AttackButton playerAttackButton;
+    private final PlayerHealth playerHealth;
+    private final PlayerStateMachine playerStateMachine;
 
-    private PlayerHealth playerHealth;
     public GameView(Context context, Player player) {
         super(context);
         this.player = player;
@@ -37,9 +35,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
 
-        playerWalkingState = new PlayerWalkingState(context, player);
-        playerHealth = new PlayerHealth(context, player);
+        GlobalContext globalContext = GlobalContext.getInstance();
+        globalContext.setContext(context);
 
+        playerHealth = new PlayerHealth(player);
+        playerStateMachine = new PlayerStateMachine(player);
         score = new Score(context);
         enemies = new Enemies(5, display, player, score);
     }
@@ -74,14 +74,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
-        playerAttackButton.onTouchEvent(event);
+        playerAttackButton.onTouchEvent(event, playerStateMachine);
         return true;
     }
 
     public void update(long deltaTime) {
         player.update(joystick, display);
         enemies.update(display);
-        playerWalkingState.update(deltaTime);
+        playerStateMachine.update(deltaTime);
     }
 
     @Override //draw game objects
@@ -97,11 +97,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     
             // Translate canvas to center on player
             canvas.translate(offsetX, offsetY);
-    
+
             // Draw objects relative to the centered canvas
             // player.draw(canvas, paint);
-            playerWalkingState.draw(canvas, paint);
+            playerStateMachine.draw(canvas, paint);
             enemies.draw(canvas, paint);
+
             // Restore the canvas state to original
             canvas.restore();
 
@@ -109,7 +110,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int canvasWidth = getWidth();
 
             playerHealth.draw(canvas, paint, canvasWidth);
-            joystick.draw(canvas, paint, canvasHeight, canvasWidth);
+            joystick.draw(canvas, paint, canvasHeight);
             playerAttackButton.draw(canvas, paint, canvasHeight, canvasWidth);
             score.draw(canvas, paint);
         }

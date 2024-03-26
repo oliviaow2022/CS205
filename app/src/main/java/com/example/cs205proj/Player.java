@@ -8,7 +8,8 @@ import android.os.Bundle;
 
 public class Player extends Entity {
     int maxV = 10;
-    Hitbox playerHitbox = null;
+    Hitbox playerHitbox;
+    String direction = "down";
 
     public Player(int x, int y) {
         super();
@@ -18,8 +19,8 @@ public class Player extends Entity {
         this.health = 4;
         this.maxHealth = 5;
 
-        this.width = 50; //current width of player
-        this.height = 50; //current height of player
+        this.width = 100; //current width of player
+        this.height = 200; //current height of player
         this.velocityX = 0;
         this.velocityY = 0;
         playerHitbox = new Hitbox(this);
@@ -36,14 +37,7 @@ public class Player extends Entity {
         y = savedInstanceState.getInt("player_y");
     }
 
-    public void draw(Canvas canvas, Paint paint) {
-        // player is currently a circle
-        paint.setColor(Color.WHITE);
-        canvas.drawCircle(
-                x,
-                y,
-                50,
-                paint);
+    public void draw(Canvas canvas, Paint paint, int canvasWidth) {
         playerHitbox.draw(canvas, paint);
     }
 
@@ -51,17 +45,24 @@ public class Player extends Entity {
         velocityX = joystick.x - joystick.joystickCenterX;
         velocityY = joystick.y - joystick.joystickCenterY;
 
-        if (velocityX < 0) {
-            x = Math.max(display.left + width, x - Math.min(maxV,-velocityX));
+        if (Math.abs(velocityX) >= Math.abs(velocityY)) {
+            if (velocityX < 0) {
+                direction = "left";
+                x = Math.max(display.left + width, x - Math.min(maxV,-velocityX));
+            } else {
+                direction = "right";
+                x = Math.min(display.right - width, x + Math.min(maxV,velocityX));
+            }
         } else {
-            x = Math.min(display.right - width, x + Math.min(maxV,velocityX));
+            if (velocityY < 0) {
+                direction = "up";
+                y = Math.max(display.top + height, y - Math.min(maxV,-velocityY));
+            } else {
+                direction = "down";
+                y = Math.min(display.bottom - height, y + Math.min(maxV,velocityY));
+            }
         }
 
-        if (velocityY < 0) {
-            y = Math.max(display.top + height, y - Math.min(maxV,-velocityY));
-        } else {
-            y = Math.min(display.bottom - height, y + Math.min(maxV,velocityY));
-        }
         playerHitbox.update(joystick);
     }
 

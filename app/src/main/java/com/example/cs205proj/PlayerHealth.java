@@ -12,11 +12,12 @@ public class PlayerHealth {
     private final Bitmap scaledEmptyHeart;
     private int x;
     private int y;
-
     private final Player player;
 
-    public PlayerHealth(Context context, Player player) {
+    public PlayerHealth(Player player) {
         this.player = player;
+
+        Context context = GlobalContext.getInstance().getContext();
         Bitmap heartsSpriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.hearts);
         Bitmap emptyHeart = Bitmap.createBitmap(heartsSpriteSheet, 2, 0, 43, 43);
         Bitmap fullHeart = Bitmap.createBitmap(heartsSpriteSheet, 178, 0, 43, 43);

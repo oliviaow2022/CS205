@@ -7,18 +7,16 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-public class PlayerWalkingState {
+public class PlayerWalkingState extends BaseState {
     Player player;
-    Bitmap spriteSheet;
     Animation[] animations;
     int currentAnimation = 0;
-    Bitmap scaledBitmap;
     public PlayerWalkingState(Context context, Player player) {
         this.player = player;
 
         Animation[] animations = new Animation[4];
 
-        spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.character_walk);
+        Bitmap spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.character_walk);
 
         int[] xCoordinate = {0, 45, 90, 130};
         int[] yCoordinate = {0, 90, 180, 250};
@@ -36,26 +34,19 @@ public class PlayerWalkingState {
 
         this.animations = animations;
 
-        Bitmap bm = Bitmap.createBitmap(spriteSheet, 0, 250, 45, 90);
-        scaledBitmap = Bitmap.createScaledBitmap(bm, player.width, player.height, true);
-
+        // Bitmap bm = Bitmap.createBitmap(spriteSheet, 0, 250, 45, 90);
+        // scaledBitmap = Bitmap.createScaledBitmap(bm, player.width, player.height, true);
     }
 
     public void update(long deltaTime) {
-        System.out.println(player.velocityX);
-
-        if (player.velocityX >= player.velocityY) {
-            if (player.velocityX > 0) {
-                currentAnimation = 1;
-            } else {
-                currentAnimation = 3;
-            }
-        } else {
-            if (player.velocityY > 0) {
-                currentAnimation = 0;
-            } else {
-                currentAnimation = 2;
-            }
+        if (player.direction.equals("down")) {
+            currentAnimation = 0;
+        } else if (player.direction.equals("right")) {
+            currentAnimation = 1;
+        } else if (player.direction.equals("up")) {
+            currentAnimation = 2;
+        } else if (player.direction.equals("left")) {
+            currentAnimation = 3;
         }
 
         animations[currentAnimation].update(deltaTime);
