@@ -8,7 +8,7 @@ public class Animation {
 
     private long timer = 0L;
     private int currentFrame = 0;
-    private int timesPlayed = 0;
+    int timesPlayed = 0;
 
     public Animation(Bitmap[] frames, boolean looping, double interval) {
         this.frames = frames;

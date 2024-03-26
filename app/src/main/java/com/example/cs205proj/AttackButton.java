@@ -18,7 +18,7 @@ public class AttackButton {
         this.playerHitbox = insertedHitbox;
     }
 
-    public boolean onTouchEvent(MotionEvent event, PlayerStateMachine playerStateMachine) {
+    public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         float touchX = event.getX();
         float touchY = event.getY();
@@ -29,7 +29,6 @@ public class AttackButton {
         if (action == MotionEvent.ACTION_DOWN){
             if (distance <= radius){
                 playerHitbox.activateHitbox();
-                playerStateMachine.changeState("swing-sword");
             } 
         }
         return true;

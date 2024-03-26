@@ -20,7 +20,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Score score;
     private final AttackButton playerAttackButton;
     private final PlayerHealth playerHealth;
-    private final PlayerStateMachine playerStateMachine;
 
     public GameView(Context context, Player player) {
         super(context);
@@ -35,11 +34,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
 
-        GlobalContext globalContext = GlobalContext.getInstance();
-        globalContext.setContext(context);
-
         playerHealth = new PlayerHealth(player);
-        playerStateMachine = new PlayerStateMachine(player);
         score = new Score(context);
         enemies = new Enemies(5, display, player, score);
     }
@@ -74,14 +69,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
-        playerAttackButton.onTouchEvent(event, playerStateMachine);
+        playerAttackButton.onTouchEvent(event);
         return true;
     }
 
     public void update(long deltaTime) {
-        player.update(joystick, display);
+        player.update(deltaTime, joystick, display);
         enemies.update(display);
-        playerStateMachine.update(deltaTime);
     }
 
     @Override //draw game objects
@@ -99,8 +93,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.translate(offsetX, offsetY);
 
             // Draw objects relative to the centered canvas
-            // player.draw(canvas, paint);
-            playerStateMachine.draw(canvas, paint);
+            player.draw(canvas, paint);
             enemies.draw(canvas, paint);
 
             // Restore the canvas state to original

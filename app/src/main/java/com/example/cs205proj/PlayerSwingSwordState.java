@@ -30,7 +30,7 @@ public class PlayerSwingSwordState extends BaseState {
                 frames[j] = Bitmap.createScaledBitmap(frame, player.width, player.height,true);
             }
 
-            animations[i] = new Animation(frames, true, 200);
+            animations[i] = new Animation(frames, false, 200);
         }
 
         this.animations = animations;
@@ -48,6 +48,11 @@ public class PlayerSwingSwordState extends BaseState {
         }
 
         animations[currentAnimation].update(deltaTime);
+
+        if (animations[currentAnimation].timesPlayed > 0) {
+            animations[currentAnimation].timesPlayed = 0;
+            player.playerStateMachine.changeState("walk");
+        }
     }
 
     public void draw(Canvas canvas, Paint paint) {
