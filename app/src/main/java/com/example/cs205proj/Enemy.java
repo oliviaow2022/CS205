@@ -18,16 +18,20 @@ public class Enemy extends Entity implements Runnable{
     int health = 100;
     private final Player player;
     private final Score score;
-    public Enemy(int x, int y, Player player, Score score) {
+
+    Animation animation;
+
+    public Enemy(int x, int y, Player player, Score score, Animation animation) {
         super();
         this.x = x;
         this.y = y;
-        this.width = 50;
-        this.height = 50;
+        this.width = 120;
+        this.height = 200;
         this.velocityX = 0;
         this.velocityY = 0;
         this.player = player;
         this.score = score;
+        this.animation = animation;
     }
     public int getX(){
         return this.x;

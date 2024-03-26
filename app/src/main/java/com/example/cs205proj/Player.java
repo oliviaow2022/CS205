@@ -10,7 +10,6 @@ public class Player extends Entity {
     int maxV = 10;
     final Hitbox playerHitbox;
     String direction = "down";
-
     final PlayerStateMachine playerStateMachine;
 
     public Player(int x, int y) {
@@ -48,6 +47,13 @@ public class Player extends Entity {
     public void update(long deltaTime, Joystick joystick, Rect display) {
         velocityX = joystick.x - joystick.joystickCenterX;
         velocityY = joystick.y - joystick.joystickCenterY;
+
+        if (velocityX == 0 && velocityY == 0) {
+            playerStateMachine.changeState("idle");
+            return;
+        }
+
+        playerStateMachine.changeState("walk");
 
         if (Math.abs(velocityX) >= Math.abs(velocityY)) {
             if (velocityX < 0) {

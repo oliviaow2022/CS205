@@ -1,5 +1,8 @@
 package com.example.cs205proj;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,16 +23,29 @@ public class Enemies {
     private final Player player;
     Rect display;
     private final Score score;
+
+    Bitmap[] frames = new Bitmap[4];
+
     public Enemies(int number, Rect display, Player player, Score score) {
         this.display = display;
         this.number = number;
         this.player = player;
         this.score = score;
+
+        Context context = GlobalContext.getInstance().getContext();
+        Bitmap spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_robot);
+        int[] xCoordinate = {80, 340, 610, 870};
+
+        for (int i = 0; i < xCoordinate.length; i++) {
+            Bitmap frame = Bitmap.createBitmap(spriteSheet, 870, 0, 120, 200);
+            frames[i] = Bitmap.createScaledBitmap(frame, 120, 200, true);
+        }
+
         enemies = new EnemiesThreadPool(number, number, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         for (int i = 0; i < number; i++) {
             int x_pos = (int) Math.round(Math.random() * display.width());
             int y_pos = (int) Math.round(Math.random() * display.height());
-            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score));
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, new Animation(frames, true, 200)));
         }
     }
     public void draw(Canvas canvas, Paint paint) {
@@ -37,7 +53,8 @@ public class Enemies {
         paint.setColor(Color.RED);
         for (Enemy enemy : activeEnemies) {
 //            System.out.println("enemies Draw" + enemy.getX());
-            canvas.drawCircle(enemy.getX(), enemy.getY(), 50, paint);
+            // canvas.drawCircle(enemy.getX(), enemy.getY(), 50, paint);
+            canvas.drawBitmap(enemy.animation.getCurrentFrame(), null, new Rect(enemy.x, enemy.y, enemy.x + enemy.width, enemy.y + enemy.height), paint);
         }
     }
 
@@ -49,7 +66,7 @@ public class Enemies {
         if (enemies.hasAvailableSpot()) {
             int x_pos = (int) Math.round(Math.random() * display.width());
             int y_pos = (int) Math.round(Math.random() * display.height());
-            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score));
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, new Animation(frames, true, 200)));
         }
     }
 }

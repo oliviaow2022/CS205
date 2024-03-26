@@ -7,8 +7,8 @@ import android.graphics.Paint;
 public class PlayerStateMachine {
     private final PlayerWalkingState playerWalkingState;
     private final PlayerSwingSwordState playerSwingSwordState;
+    private final PlayerIdleState playerIdleState;
     private BaseState currentState;
-
     private final Player player;
 
     public PlayerStateMachine(Player player) {
@@ -17,7 +17,8 @@ public class PlayerStateMachine {
         Context context = GlobalContext.getInstance().getContext();
         playerWalkingState = new PlayerWalkingState(context, player);
         playerSwingSwordState = new PlayerSwingSwordState(context, player);
-        currentState = playerWalkingState;
+        playerIdleState = new PlayerIdleState(context, player);
+        currentState = playerIdleState;
     }
 
     public void update(long deltaTime) {
@@ -25,7 +26,10 @@ public class PlayerStateMachine {
     }
 
     public void changeState(String state) {
-        if (state.equals("walk")) {
+        if (state.equals("idle")) {
+            currentState = playerIdleState;
+            player.width = 100;
+        } else if (state.equals("walk")) {
             currentState = playerWalkingState;
             player.width = 100;
         } else if (state.equals("swing-sword")) {
