@@ -18,7 +18,6 @@ public class Enemy extends Entity implements Runnable {
     int health = 100;
     private final Player player;
     private final Score score;
-
     long movementTimer;
     int movementDuration;
     Animation animation;
@@ -44,10 +43,10 @@ public class Enemy extends Entity implements Runnable {
     public int getY(){
         return this.y;
     }
-//    public void draw(Canvas canvas, Paint paint) {
-//        paint.setColor(Color.RED);
-//        canvas.drawCircle(x, y, 50, paint);
-//    }
+
+    public void draw(Canvas canvas, Paint paint) {
+        canvas.drawBitmap(animation.getCurrentFrame(), null, new Rect(x, y, x + width, y + height), paint);
+   }
 
     public void update(long deltaTime, Rect display) {
         if (movementTimer > movementDuration) {
@@ -65,7 +64,7 @@ public class Enemy extends Entity implements Runnable {
         } else if (direction.equals("up")) {
             y = (int) Math.max(display.top + height, y - walkSpeed * deltaTime);
         } else if (direction.equals("down")) {
-            y = (int) Math.min(display.top - height, y + walkSpeed * deltaTime);
+            y = (int) Math.min(display.bottom - height, y + walkSpeed * deltaTime);
         }
     }
 

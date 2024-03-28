@@ -52,9 +52,7 @@ public class Enemies {
         Set<Enemy> activeEnemies = enemies.getActiveTasks();
         paint.setColor(Color.RED);
         for (Enemy enemy : activeEnemies) {
-//            System.out.println("enemies Draw" + enemy.getX());
-            // canvas.drawCircle(enemy.getX(), enemy.getY(), 50, paint);
-            canvas.drawBitmap(enemy.animation.getCurrentFrame(), null, new Rect(enemy.x, enemy.y, enemy.x + enemy.width, enemy.y + enemy.height), paint);
+            enemy.draw(canvas, paint);
         }
     }
 
