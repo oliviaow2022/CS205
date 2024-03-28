@@ -26,8 +26,8 @@ public class PlayerHealth {
     }
 
     public void draw(Canvas canvas, Paint paint, int canvasWidth) {
-        this.x = canvasWidth - 525;
-        this.y = 30;
+        this.x = 100;
+        this.y = 150;
 
         for (int i = 0; i < player.health; i++) {
             canvas.drawBitmap(scaledFullHeart, null, new Rect(x + 100*i, y, x + 100*(i+1), y+100), paint);
