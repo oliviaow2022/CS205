@@ -7,15 +7,6 @@ public class Entity {
     int height;
     int velocityX;
     int velocityY;
+    String direction = "down";
 
-    int health;
-    int maxHealth;
-
-    public boolean collides(Entity target) {
-        return !(this.x + this.width < target.x || this.x > target.x + target.width || this.y + this.height < target.y || this.y > target.y + target.height);
-    }
-
-    public void damage(int damage) {
-        this.health -= damage;
-    }
 }

@@ -39,6 +39,10 @@ public class PlayerWalkingState extends BaseState {
     }
 
     public void update(long deltaTime) {
+        if (player.velocityX == 0 && player.velocityY == 0) {
+            player.playerStateMachine.changeState("idle");
+        }
+
         if (player.direction.equals("down")) {
             currentAnimation = 0;
         } else if (player.direction.equals("right")) {

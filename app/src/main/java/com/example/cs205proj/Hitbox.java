@@ -6,18 +6,17 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Hitbox extends Entity {
-    private Rect rect;
-    private Player thePlayer;
-    private Joystick theJoyStick;
+    Rect rect;
+    private Player player;
     long timeActivated;
     boolean isActivated = false;
 
     public Hitbox(Player player) {
         super();
-        thePlayer = player;
+        this.player = player;
         rect = new Rect(x, y, x + width, y + height); // create rectangle object for drawing and collision
-        this.x = thePlayer.getX();
-        this.y = thePlayer.getY();
+        this.x = player.getX();
+        this.y = player.getY();
         this.width = 100;
         this.height = 100;
         this.velocityX = 0;
@@ -54,8 +53,8 @@ public class Hitbox extends Entity {
         }
     
         // Calculate hitbox position relative to player's position
-        int offsetX = thePlayer.getX() + finalOffsetX;
-        int offsetY = thePlayer.getY() + finalOffsetY;
+        int offsetX = player.getX() + finalOffsetX;
+        int offsetY = player.getY() + finalOffsetY;
     
         // Update hitbox position
         this.x = offsetX;
@@ -72,6 +71,6 @@ public class Hitbox extends Entity {
     public void activateHitbox(){
         timeActivated = System.currentTimeMillis();
         isActivated = true;
-        System.out.println("HITBOX ACTIVATED");
+        player.playerStateMachine.changeState("swing-sword");
     }
 }

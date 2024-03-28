@@ -34,9 +34,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
 
-        playerHealth = new PlayerHealth(player);
+        playerHealth = new PlayerHealth();
         score = new Score(context);
-        enemies = new Enemies(5, display, player, score);
+        enemies = new Enemies(5, display, player, score, playerHealth);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(long deltaTime) {
         player.update(deltaTime, joystick, display);
-        enemies.update(display);
+        enemies.update(deltaTime, display);
     }
 
     @Override //draw game objects

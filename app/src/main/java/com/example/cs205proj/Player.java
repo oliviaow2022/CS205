@@ -7,19 +7,19 @@ import android.graphics.Rect;
 import android.os.Bundle;
 
 public class Player extends Entity {
-    int maxV = 10;
+    int maxV = 1;
     final Hitbox playerHitbox;
-    String direction = "down";
-
     final PlayerStateMachine playerStateMachine;
+    Rect rect;
+    boolean invulnerable = false;
+    int invulnerableDuration = 0;
+    long invulnerableTimer = 0;
+    long flashTimer = 0;
 
     public Player(int x, int y) {
         super();
         this.x = x;
         this.y = y;
-
-        this.health = 4;
-        this.maxHealth = 5;
 
         this.width = 100; //current width of player
         this.height = 200; //current height of player
@@ -27,6 +27,8 @@ public class Player extends Entity {
         this.velocityY = 0;
         this.playerHitbox = new Hitbox(this);
         this.playerStateMachine = new PlayerStateMachine(this);
+
+        rect = new Rect(x, y, x + width, y + height);
     }
 
     public void saveInstanceState(Bundle outState) {
@@ -42,7 +44,16 @@ public class Player extends Entity {
 
     public void draw(Canvas canvas, Paint paint) {
         playerHitbox.draw(canvas, paint);
-        playerStateMachine.draw(canvas, paint);
+
+        if (!invulnerable) {
+            playerStateMachine.draw(canvas, paint);
+            return;
+        }
+
+        if (invulnerable && flashTimer > 200) {
+            flashTimer = 0;
+            playerStateMachine.draw(canvas, paint);
+        }
     }
 
     public void update(long deltaTime, Joystick joystick, Rect display) {
@@ -52,23 +63,36 @@ public class Player extends Entity {
         if (Math.abs(velocityX) >= Math.abs(velocityY)) {
             if (velocityX < 0) {
                 direction = "left";
-                x = Math.max(display.left + width, x - Math.min(maxV,-velocityX));
-            } else {
+                x = (int) Math.max(display.left + width, x - Math.min(maxV,-velocityX) * deltaTime);
+            } else if (velocityX > 0){
                 direction = "right";
-                x = Math.min(display.right - width, x + Math.min(maxV,velocityX));
+                x = (int) Math.min(display.right - width, x + Math.min(maxV,velocityX) * deltaTime);
             }
         } else {
             if (velocityY < 0) {
                 direction = "up";
-                y = Math.max(display.top + height, y - Math.min(maxV,-velocityY));
-            } else {
+                y = (int) Math.max(display.top + height, y - Math.min(maxV,-velocityY) * deltaTime);
+            } else if (velocityY > 0){
                 direction = "down";
-                y = Math.min(display.bottom - height, y + Math.min(maxV,velocityY));
+                y = (int) Math.min(display.bottom - height, y + Math.min(maxV,velocityY) * deltaTime);
+            }
+        }
+
+        if (invulnerable) {
+            invulnerableTimer += deltaTime;
+            flashTimer += deltaTime;
+
+            if (invulnerableTimer > invulnerableDuration) {
+                invulnerable = false;
+                invulnerableTimer = 0;
+                invulnerableDuration = 0;
+                flashTimer = 0;
             }
         }
 
         playerHitbox.update(joystick);
         playerStateMachine.update(deltaTime);
+        rect.set(x, y, x + width, y + height);
     }
 
     public int getVelocityX(){
@@ -89,5 +113,10 @@ public class Player extends Entity {
 
     public Hitbox getHitbox(){
         return this.playerHitbox;
+    }
+
+    public void goInvulnerable(int invulnerableDuration) {
+        invulnerable = true;
+        this.invulnerableDuration = invulnerableDuration;
     }
 }
