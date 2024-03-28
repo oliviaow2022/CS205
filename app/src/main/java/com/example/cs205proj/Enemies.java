@@ -24,13 +24,15 @@ public class Enemies {
     Rect display;
     private final Score score;
 
+    private final PlayerHealth playerHealth;
     Bitmap[] frames = new Bitmap[4];
 
-    public Enemies(int number, Rect display, Player player, Score score) {
+    public Enemies(int number, Rect display, Player player, Score score, PlayerHealth playerHealth) {
         this.display = display;
         this.number = number;
         this.player = player;
         this.score = score;
+        this.playerHealth = playerHealth;
 
         Context context = GlobalContext.getInstance().getContext();
         Bitmap spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_robot);
@@ -45,7 +47,7 @@ public class Enemies {
         for (int i = 0; i < number; i++) {
             int x_pos = (int) Math.round(Math.random() * display.width());
             int y_pos = (int) Math.round(Math.random() * display.height());
-            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, new Animation(frames, true, 200)));
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, new Animation(frames, true, 200), playerHealth));
         }
     }
     public void draw(Canvas canvas, Paint paint) {
@@ -64,7 +66,7 @@ public class Enemies {
         if (enemies.hasAvailableSpot()) {
             int x_pos = (int) Math.round(Math.random() * display.width());
             int y_pos = (int) Math.round(Math.random() * display.height());
-            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, new Animation(frames, true, 200)));
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, new Animation(frames, true, 200), playerHealth));
         }
     }
 }

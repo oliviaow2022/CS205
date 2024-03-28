@@ -57,5 +57,4 @@ public class Score {
         paint.setTextSize(100f);
         canvas.drawText("score: " + this.value, OFFSET, OFFSET, paint);
     }
-
 }
