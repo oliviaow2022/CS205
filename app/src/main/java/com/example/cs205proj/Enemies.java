@@ -37,7 +37,7 @@ public class Enemies {
         int[] xCoordinate = {80, 340, 610, 870};
 
         for (int i = 0; i < xCoordinate.length; i++) {
-            Bitmap frame = Bitmap.createBitmap(spriteSheet, 870, 0, 120, 200);
+            Bitmap frame = Bitmap.createBitmap(spriteSheet, xCoordinate[i], 0, 120, 200);
             frames[i] = Bitmap.createScaledBitmap(frame, 120, 200, true);
         }
 
@@ -58,10 +58,10 @@ public class Enemies {
         }
     }
 
-    public void update(Rect display) {
+    public void update(long deltaTime, Rect display) {
         Set<Enemy> activeEnemies = enemies.getActiveTasks();
         for (Enemy enemy : activeEnemies) {
-            enemy.update();
+            enemy.update(deltaTime, display);
         }
         if (enemies.hasAvailableSpot()) {
             int x_pos = (int) Math.round(Math.random() * display.width());

@@ -39,9 +39,9 @@ public class PlayerSwingSwordState extends BaseState {
     public void update(long deltaTime){
         if (player.direction.equals("down")) {
             currentAnimation = 0;
-        } else if (player.direction.equals("right")) {
-            currentAnimation = 1;
         } else if (player.direction.equals("up")) {
+            currentAnimation = 1;
+        } else if (player.direction.equals("right")) {
             currentAnimation = 2;
         } else if (player.direction.equals("left")) {
             currentAnimation = 3;
@@ -51,7 +51,7 @@ public class PlayerSwingSwordState extends BaseState {
 
         if (animations[currentAnimation].timesPlayed > 0) {
             animations[currentAnimation].timesPlayed = 0;
-            player.playerStateMachine.changeState("walk");
+            player.playerStateMachine.changeState("idle");
         }
     }
 

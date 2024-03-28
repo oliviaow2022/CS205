@@ -43,5 +43,4 @@ public class AttackButton {
         paint.setColor(Color.GREEN); //Placeholder color
         canvas.drawCircle(buttonCenterX, buttonCenterY, radius, paint);
     }
-
 }

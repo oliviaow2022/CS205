@@ -7,9 +7,8 @@ import android.graphics.Rect;
 import android.os.Bundle;
 
 public class Player extends Entity {
-    int maxV = 10;
+    int maxV = 1;
     final Hitbox playerHitbox;
-    String direction = "down";
     final PlayerStateMachine playerStateMachine;
 
     public Player(int x, int y) {
@@ -48,28 +47,21 @@ public class Player extends Entity {
         velocityX = joystick.x - joystick.joystickCenterX;
         velocityY = joystick.y - joystick.joystickCenterY;
 
-        if (velocityX == 0 && velocityY == 0) {
-            playerStateMachine.changeState("idle");
-            return;
-        }
-
-        playerStateMachine.changeState("walk");
-
         if (Math.abs(velocityX) >= Math.abs(velocityY)) {
             if (velocityX < 0) {
                 direction = "left";
-                x = Math.max(display.left + width, x - Math.min(maxV,-velocityX));
-            } else {
+                x = (int) Math.max(display.left + width, x - Math.min(maxV,-velocityX) * deltaTime);
+            } else if (velocityX > 0){
                 direction = "right";
-                x = Math.min(display.right - width, x + Math.min(maxV,velocityX));
+                x = (int) Math.min(display.right - width, x + Math.min(maxV,velocityX) * deltaTime);
             }
         } else {
             if (velocityY < 0) {
                 direction = "up";
-                y = Math.max(display.top + height, y - Math.min(maxV,-velocityY));
-            } else {
+                y = (int) Math.max(display.top + height, y - Math.min(maxV,-velocityY) * deltaTime);
+            } else if (velocityY > 0){
                 direction = "down";
-                y = Math.min(display.bottom - height, y + Math.min(maxV,velocityY));
+                y = (int) Math.min(display.bottom - height, y + Math.min(maxV,velocityY) * deltaTime);
             }
         }
 

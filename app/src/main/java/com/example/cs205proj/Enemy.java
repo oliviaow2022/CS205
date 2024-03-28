@@ -9,7 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
-public class Enemy extends Entity implements Runnable{
+public class Enemy extends Entity implements Runnable {
     Random random = new Random();
     int distanceThreshold = random.nextInt(150) + random.nextInt(300);  //enemies dont converge into one
     int MAX_SPEED = 10;
@@ -19,7 +19,11 @@ public class Enemy extends Entity implements Runnable{
     private final Player player;
     private final Score score;
 
+    long movementTimer;
+    int movementDuration;
     Animation animation;
+    int walkSpeed = 1;
+    String[] directions = {"left", "right", "up", "down"};
 
     public Enemy(int x, int y, Player player, Score score, Animation animation) {
         super();
@@ -45,32 +49,24 @@ public class Enemy extends Entity implements Runnable{
 //        canvas.drawCircle(x, y, 50, paint);
 //    }
 
-    public void update() {
-        double distanceToPlayerX = player.x - this.x;
-        double distanceToPlayerY = player.y - this.y;
-
-        double distanceToPlayer = getDistanceBetweenObjects(this, player);
-
-        double directionX = distanceToPlayerX / distanceToPlayer;
-        double directionY = distanceToPlayerY / distanceToPlayer;
-
-        if (distanceToPlayer > distanceThreshold && distanceToPlayer < VISIBILITY){
-            velocityX = (int) (directionX * MAX_SPEED);
-            velocityY = (int) (directionY * MAX_SPEED);
-        }else{
-            velocityX = 0;
-            velocityY = 0;
+    public void update(long deltaTime, Rect display) {
+        if (movementTimer > movementDuration) {
+            movementTimer = 0;
+            movementDuration = (new Random().nextInt(5) + 1) * 500;
+            direction = directions[new Random().nextInt(directions.length)];
         }
 
-        x += velocityX;
-        y += velocityY;
-    }
+        movementTimer += deltaTime;
 
-    private double getDistanceBetweenObjects(Enemy enemy, Player player) {
-        return Math.sqrt(
-                Math.pow(enemy.x - player.x,2) +
-                Math.pow(enemy.y - player.y,2)
-        );
+        if (direction.equals("left")) {
+            x = (int) Math.max(display.left + width, x - walkSpeed * deltaTime);
+        } else if (direction.equals("right")) {
+            x = (int) Math.min(display.right - width, x + walkSpeed * deltaTime);
+        } else if (direction.equals("up")) {
+            y = (int) Math.max(display.top + height, y - walkSpeed * deltaTime);
+        } else if (direction.equals("down")) {
+            y = (int) Math.min(display.top - height, y + walkSpeed * deltaTime);
+        }
     }
 
     @Override

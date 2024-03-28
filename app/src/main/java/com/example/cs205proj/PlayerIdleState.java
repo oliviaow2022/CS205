@@ -26,6 +26,10 @@ public class PlayerIdleState extends BaseState {
     }
 
     public void update(long deltaTime) {
+        if (Math.abs(player.velocityX) > 0 || Math.abs(player.velocityY) > 0) {
+            player.playerStateMachine.changeState("walk");
+        }
+
         if (player.direction.equals("down")) {
             currentAnimation = 0;
         } else if (player.direction.equals("right")) {
