@@ -23,6 +23,7 @@ public class Enemy extends Entity implements Runnable {
     Animation animation;
     int walkSpeed = 1;
     String[] directions = {"left", "right", "up", "down"};
+    Rect rect;
 
     public Enemy(int x, int y, Player player, Score score, Animation animation) {
         super();
@@ -35,6 +36,7 @@ public class Enemy extends Entity implements Runnable {
         this.player = player;
         this.score = score;
         this.animation = animation;
+        this.rect = new Rect(x, y, x + width, y + height);
     }
     public int getX(){
         return this.x;
@@ -66,16 +68,22 @@ public class Enemy extends Entity implements Runnable {
         } else if (direction.equals("down")) {
             y = (int) Math.min(display.bottom - height, y + walkSpeed * deltaTime);
         }
+
+        rect.set(x, y, x + width, y + height);
     }
 
     @Override
     public void run() {
         while (isAlive) {
-//            System.out.println(Math.abs(player.x - this.x)+ " ," + Math.abs(player.y - this.y));
+            /*
             if (Math.abs(player.x - this.x) < 200 && Math.abs(player.y - this.y) < 200){
                 isAlive = false;
             }
+            */
+            if (player.playerHitbox.isActivated && player.playerHitbox.rect.intersect(rect)) {
+                isAlive = false;
+                score.increment();
+            }
         }
-        score.increment();
     }
 }

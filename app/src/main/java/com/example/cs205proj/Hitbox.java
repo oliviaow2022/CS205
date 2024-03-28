@@ -6,10 +6,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Hitbox extends Entity {
-    private Rect rect;
+    Rect rect;
     private Player player;
-
-    private Joystick theJoyStick;
     long timeActivated;
     boolean isActivated = false;
 
@@ -74,6 +72,5 @@ public class Hitbox extends Entity {
         timeActivated = System.currentTimeMillis();
         isActivated = true;
         player.playerStateMachine.changeState("swing-sword");
-        System.out.println("HITBOX ACTIVATED");
     }
 }
