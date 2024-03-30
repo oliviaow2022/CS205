@@ -24,6 +24,9 @@ public class TitleScreen extends AppCompatActivity {
         titleMusic.setLooping(true);
         titleMusic.start();
 
+//        delete db if needed
+//        this.deleteDatabase("Game");
+
 //      REQUIREMENT create / get data from sqlLite
         db = DatabaseHelper.getInstance(this, "Game");
         TextView highscore = findViewById(R.id.highscore);

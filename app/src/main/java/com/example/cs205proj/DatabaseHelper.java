@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_SCORE, 0);
         db.insert(TABLE_SCORES, null, values);
-        db.close();
+//        db.close();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_SCORE, score);
         db.insert(TABLE_SCORES, null, values);
-        db.close();
+//        db.close();
     }
 
     // Method to retrieve the latest score from the database
@@ -60,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             latestScore = cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE));
             cursor.close();
         }
-        db.close();
+//        db.close();
         return latestScore;
     }
 }

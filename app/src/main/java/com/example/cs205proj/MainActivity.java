@@ -41,13 +41,11 @@ public class MainActivity extends Activity {
     }
     @Override
     protected void onPause() {
-
         //      REQUIREMENT store data into sqlLite
         int current_score = score.getValue();
         int max_score = Math.max(current_score, db.getLatestScore());
         System.out.println("onPause:" + current_score);
         db.insertScore(max_score);
-
         super.onPause();
         backgroundMusic.release();
     }
