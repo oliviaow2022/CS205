@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class TitleScreen extends AppCompatActivity {
 
     MediaPlayer titleMusic;
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,11 @@ public class TitleScreen extends AppCompatActivity {
         titleMusic = MediaPlayer.create(TitleScreen.this, R.raw.title_music);
         titleMusic.setLooping(true);
         titleMusic.start();
+
+//      REQUIREMENT create / get data from sqlLite
+        db = DatabaseHelper.getInstance(this, "Game");
+        TextView highscore = findViewById(R.id.highscore);
+        highscore.setText("Highscore: " + db.getLatestScore());
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override

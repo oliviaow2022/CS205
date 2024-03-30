@@ -21,9 +21,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final AttackButton playerAttackButton;
     private final PlayerHealth playerHealth;
 
-    public GameView(Context context, Player player) {
+    public GameView(Context context, Player player, Score score) {
         super(context);
         this.player = player;
+        this.score = score;
         joystick = new Joystick(context);
         Hitbox playerHitbox = player.getHitbox();
         playerAttackButton = new AttackButton(playerHitbox);
@@ -35,7 +36,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         display = windowMetrics.getBounds();
 
         playerHealth = new PlayerHealth();
-        score = new Score(context);
         enemies = new Enemies(5, display, player, score, playerHealth);
     }
 
