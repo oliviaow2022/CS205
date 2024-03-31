@@ -20,13 +20,14 @@ public class Enemy extends Entity implements Runnable {
     private final Score score;
     long movementTimer;
     int movementDuration;
-    Animation animation;
+    Animation[] animations;
     int walkSpeed = 1;
     String[] directions = {"left", "right", "up", "down"};
     Rect rect;
     PlayerHealth playerHealth;
+    int currentAnimation = 0;
 
-    public Enemy(int x, int y, Player player, Score score, Animation animation, PlayerHealth playerHealth) {
+    public Enemy(int x, int y, Player player, Score score, Animation[] animations, PlayerHealth playerHealth) {
         super();
         this.x = x;
         this.y = y;
@@ -37,7 +38,7 @@ public class Enemy extends Entity implements Runnable {
         this.player = player;
         this.score = score;
         this.playerHealth = playerHealth;
-        this.animation = animation;
+        this.animations = animations;
         this.rect = new Rect(x, y, x + width, y + height);
     }
     public int getX(){
@@ -49,7 +50,7 @@ public class Enemy extends Entity implements Runnable {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(animation.getCurrentFrame(), null, new Rect(x, y, x + width, y + height), paint);
+        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(x, y, x + width, y + height), paint);
    }
 
     public void update(long deltaTime, Rect display) {
@@ -62,8 +63,10 @@ public class Enemy extends Entity implements Runnable {
         movementTimer += deltaTime;
 
         if (direction.equals("left")) {
+            currentAnimation = 1;
             x = (int) Math.max(display.left + width, x - walkSpeed * deltaTime);
         } else if (direction.equals("right")) {
+            currentAnimation = 0;
             x = (int) Math.min(display.right - width, x + walkSpeed * deltaTime);
         } else if (direction.equals("up")) {
             y = (int) Math.max(display.top + height, y - walkSpeed * deltaTime);
@@ -72,6 +75,7 @@ public class Enemy extends Entity implements Runnable {
         }
 
         rect.set(x, y, x + width, y + height);
+        animations[currentAnimation].update(deltaTime);
     }
 
     @Override
