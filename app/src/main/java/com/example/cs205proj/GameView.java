@@ -1,14 +1,9 @@
 package com.example.cs205proj;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Insets;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -25,21 +20,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
     private final Player player;
     private final Enemies enemies;
-    private final Joystick joystick = new Joystick();
+    private final Joystick joystick;
     private final Paint paint = new Paint();
     private final Rect display;
+    private final Score score;
+    private final AttackButton playerAttackButton;
+    private final PlayerHealth playerHealth;
     private final PauseGameButton pauseButton;
 
-    public GameView(Context context, Player player) {
+    public GameView(Context context, Player player, Score score) {
         super(context);
         this.player = player;
+        this.score = score;
+        joystick = new Joystick(context);
+        Hitbox playerHitbox = player.getHitbox();
+        playerAttackButton = new AttackButton(playerHitbox);
         getHolder().addCallback(this);
         gameThread = new GameThread(getHolder(), this);
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
         display = windowMetrics.getBounds();
-        enemies = new Enemies(5, display, player);
+
+        playerHealth = new PlayerHealth();
+        enemies = new Enemies(5, display, player, score, playerHealth);
 
         pauseButton = new PauseGameButton(context);
     }
@@ -68,7 +72,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            retry = false;
         }
     }
 
@@ -76,13 +79,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
         pauseButton.onTouchEvent(event);
-        //player.update(joystick, display);
+        playerAttackButton.onTouchEvent(event);
         return true;
     }
 
     public void update(long deltaTime) {
-            player.update(joystick, display);
-            enemies.update(display);
+        player.update(deltaTime, joystick, display);
+        enemies.update(deltaTime, display);
     }
 
     @Override //draw game objects
@@ -98,16 +101,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     
             // Translate canvas to center on player
             canvas.translate(offsetX, offsetY);
-    
+
             // Draw objects relative to the centered canvas
             player.draw(canvas, paint);
             enemies.draw(canvas, paint);
-    
+
             // Restore the canvas state to original
             canvas.restore();
+
             int canvasHeight = getHeight();
-            // Draw joystick at its fixed position
+            int canvasWidth = getWidth();
+
+            playerHealth.draw(canvas, paint, canvasWidth);
             joystick.draw(canvas, paint, canvasHeight);
+            playerAttackButton.draw(canvas, paint, canvasHeight, canvasWidth);
+            score.draw(canvas, paint);
             pauseButton.draw(canvas);
         }
     }

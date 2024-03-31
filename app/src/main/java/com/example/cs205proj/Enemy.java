@@ -9,23 +9,36 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
-public class Enemy extends Entity implements Runnable{
+public class Enemy extends Entity implements Runnable {
     Random random = new Random();
     int distanceThreshold = random.nextInt(150) + random.nextInt(300);  //enemies dont converge into one
     int MAX_SPEED = 10;
-//    int VISIBILITY = 2000;
     int VISIBILITY = (int)Double.POSITIVE_INFINITY;
     boolean isAlive = true;
+    int health = 100;
     private final Player player;
-    public Enemy(int x, int y, Player player) {
+    private final Score score;
+    long movementTimer;
+    int movementDuration;
+    Animation animation;
+    int walkSpeed = 1;
+    String[] directions = {"left", "right", "up", "down"};
+    Rect rect;
+    PlayerHealth playerHealth;
+
+    public Enemy(int x, int y, Player player, Score score, Animation animation, PlayerHealth playerHealth) {
         super();
         this.x = x;
         this.y = y;
-        this.width = 50;
-        this.height = 50;
+        this.width = 120;
+        this.height = 200;
         this.velocityX = 0;
         this.velocityY = 0;
         this.player = player;
+        this.score = score;
+        this.playerHealth = playerHealth;
+        this.animation = animation;
+        this.rect = new Rect(x, y, x + width, y + height);
     }
     public int getX(){
         return this.x;
@@ -34,44 +47,44 @@ public class Enemy extends Entity implements Runnable{
     public int getY(){
         return this.y;
     }
-//    public void draw(Canvas canvas, Paint paint) {
-//        paint.setColor(Color.RED);
-//        canvas.drawCircle(x, y, 50, paint);
-//    }
 
-    public void update() {
-        double distanceToPlayerX = player.x - this.x;
-        double distanceToPlayerY = player.y - this.y;
+    public void draw(Canvas canvas, Paint paint) {
+        canvas.drawBitmap(animation.getCurrentFrame(), null, new Rect(x, y, x + width, y + height), paint);
+   }
 
-        double distanceToPlayer = getDistanceBetweenObjects(this, player);
-
-        double directionX = distanceToPlayerX / distanceToPlayer;
-        double directionY = distanceToPlayerY / distanceToPlayer;
-
-        if (distanceToPlayer > distanceThreshold && distanceToPlayer < VISIBILITY){
-            velocityX = (int) (directionX * MAX_SPEED);
-            velocityY = (int) (directionY * MAX_SPEED);
-        }else{
-            velocityX = 0;
-            velocityY = 0;
+    public void update(long deltaTime, Rect display) {
+        if (movementTimer > movementDuration) {
+            movementTimer = 0;
+            movementDuration = (new Random().nextInt(5) + 1) * 500;
+            direction = directions[new Random().nextInt(directions.length)];
         }
 
-        x += velocityX;
-        y += velocityY;
-    }
+        movementTimer += deltaTime;
 
-    private double getDistanceBetweenObjects(Enemy enemy, Player player) {
-        return Math.sqrt(
-                Math.pow(enemy.x - player.x,2) +
-                Math.pow(enemy.y - player.y,2)
-        );
+        if (direction.equals("left")) {
+            x = (int) Math.max(display.left + width, x - walkSpeed * deltaTime);
+        } else if (direction.equals("right")) {
+            x = (int) Math.min(display.right - width, x + walkSpeed * deltaTime);
+        } else if (direction.equals("up")) {
+            y = (int) Math.max(display.top + height, y - walkSpeed * deltaTime);
+        } else if (direction.equals("down")) {
+            y = (int) Math.min(display.bottom - height, y + walkSpeed * deltaTime);
+        }
+
+        rect.set(x, y, x + width, y + height);
     }
 
     @Override
     public void run() {
         while (isAlive) {
-            if (Math.abs(player.x - this.x) < 5 && Math.abs(player.y - this.y) < 5){
+            if (player.playerHitbox.isActivated && player.playerHitbox.rect.intersect(rect)) {
                 isAlive = false;
+                score.increment();
+            }
+
+            if (!player.invulnerable && player.rect.intersect(rect)) {
+                playerHealth.decrement();
+                player.goInvulnerable(2000);
             }
         }
     }

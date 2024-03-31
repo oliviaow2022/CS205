@@ -6,7 +6,7 @@ public class GameThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private GameView gameView;
     private boolean running;
-    private long targetFPS = 60;
+    private long targetFPS = 30;
 
     private ElapsedTimer elapsedTimer = new ElapsedTimer();
 

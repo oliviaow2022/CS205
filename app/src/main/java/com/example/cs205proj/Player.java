@@ -7,16 +7,28 @@ import android.graphics.Rect;
 import android.os.Bundle;
 
 public class Player extends Entity {
-    int maxV = 10;
+    int maxV = 1;
+    final Hitbox playerHitbox;
+    final PlayerStateMachine playerStateMachine;
+    Rect rect;
+    boolean invulnerable = false;
+    int invulnerableDuration = 0;
+    long invulnerableTimer = 0;
+    long flashTimer = 0;
 
     public Player(int x, int y) {
         super();
         this.x = x;
         this.y = y;
-        this.width = 50;
-        this.height = 50;
+
+        this.width = 100; //current width of player
+        this.height = 200; //current height of player
         this.velocityX = 0;
         this.velocityY = 0;
+        this.playerHitbox = new Hitbox(this);
+        this.playerStateMachine = new PlayerStateMachine(this);
+
+        rect = new Rect(x, y, x + width, y + height);
     }
 
     public void saveInstanceState(Bundle outState) {
@@ -31,29 +43,80 @@ public class Player extends Entity {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        // player is currently a circle
-        paint.setColor(Color.WHITE);
-        canvas.drawCircle(
-                x,
-                y,
-                50,
-                paint);
+        playerHitbox.draw(canvas, paint);
+
+        if (!invulnerable) {
+            playerStateMachine.draw(canvas, paint);
+            return;
+        }
+
+        if (invulnerable && flashTimer > 200) {
+            flashTimer = 0;
+            playerStateMachine.draw(canvas, paint);
+        }
     }
 
-    public void update(Joystick joystick, Rect display) {
+    public void update(long deltaTime, Joystick joystick, Rect display) {
         velocityX = joystick.x - joystick.joystickCenterX;
         velocityY = joystick.y - joystick.joystickCenterY;
 
-        if (velocityX < 0) {
-            x = Math.max(display.left + width, x - Math.min(maxV,-velocityX));
+        if (Math.abs(velocityX) >= Math.abs(velocityY)) {
+            if (velocityX < 0) {
+                direction = "left";
+                x = (int) Math.max(display.left + width, x - Math.min(maxV,-velocityX) * deltaTime);
+            } else if (velocityX > 0){
+                direction = "right";
+                x = (int) Math.min(display.right - width, x + Math.min(maxV,velocityX) * deltaTime);
+            }
         } else {
-            x = Math.min(display.right - width, x + Math.min(maxV,velocityX));
+            if (velocityY < 0) {
+                direction = "up";
+                y = (int) Math.max(display.top + height, y - Math.min(maxV,-velocityY) * deltaTime);
+            } else if (velocityY > 0){
+                direction = "down";
+                y = (int) Math.min(display.bottom - height, y + Math.min(maxV,velocityY) * deltaTime);
+            }
         }
 
-        if (velocityY < 0) {
-            y = Math.max(display.top + height, y - Math.min(maxV,-velocityY));
-        } else {
-            y = Math.min(display.bottom - height, y + Math.min(maxV,velocityY));
+        if (invulnerable) {
+            invulnerableTimer += deltaTime;
+            flashTimer += deltaTime;
+
+            if (invulnerableTimer > invulnerableDuration) {
+                invulnerable = false;
+                invulnerableTimer = 0;
+                invulnerableDuration = 0;
+                flashTimer = 0;
+            }
         }
+
+        playerHitbox.update(joystick);
+        playerStateMachine.update(deltaTime);
+        rect.set(x, y, x + width, y + height);
+    }
+
+    public int getVelocityX(){
+        return this.velocityX;
+    }
+
+    public int getVelocityY(){
+        return this.velocityY;
+    }
+
+    public int getX(){
+        return this.x;
+    }
+
+    public int getY(){
+        return this.y;
+    }
+
+    public Hitbox getHitbox(){
+        return this.playerHitbox;
+    }
+
+    public void goInvulnerable(int invulnerableDuration) {
+        invulnerable = true;
+        this.invulnerableDuration = invulnerableDuration;
     }
 }
