@@ -1,6 +1,7 @@
 package com.example.cs205proj;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -28,6 +29,7 @@ public class Projectile {
 
     public void draw(Canvas canvas, Paint paint) {
         if (isAlive) {
+            paint.setColor(Color.GREEN);
             canvas.drawRect(x, y, x + width, y + height, paint);
         }
     }

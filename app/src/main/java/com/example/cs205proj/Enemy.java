@@ -12,19 +12,18 @@ import android.view.SurfaceHolder;
 public class Enemy extends Entity implements Runnable {
     Random random = new Random();
     boolean isAlive = true;
-    private final Player player;
+    final Player player;
     private final Score score;
     long movementTimer;
     int movementDuration;
-    Animation[] animations;
     int walkSpeed = 1;
     String[] directions = {"left", "right", "up", "down"};
     Rect rect;
     PlayerHealth playerHealth;
-    int currentAnimation = 0;
     ArrayList<Projectile> projectileList = new ArrayList<>();
-
-    public Enemy(int x, int y, Player player, Score score, Animation[] animations, PlayerHealth playerHealth) {
+    EnemyFrames enemyFrames;
+    final EnemyStateMachine enemyStateMachine;
+    public Enemy(int x, int y, Player player, Score score, EnemyFrames enemyFrames, PlayerHealth playerHealth) {
         super();
         this.x = x;
         this.y = y;
@@ -35,7 +34,8 @@ public class Enemy extends Entity implements Runnable {
         this.player = player;
         this.score = score;
         this.playerHealth = playerHealth;
-        this.animations = animations;
+        this.enemyFrames = enemyFrames;
+        this.enemyStateMachine = new EnemyStateMachine(this, enemyFrames);
         this.rect = new Rect(x, y, x + width, y + height);
     }
     public int getX(){
@@ -50,23 +50,23 @@ public class Enemy extends Entity implements Runnable {
         for (Projectile projectile : projectileList) {
             projectile.draw(canvas, paint);
         }
-        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(x, y, x + width, y + height), paint);
+        enemyStateMachine.draw(canvas, paint);
    }
 
     public void update(long deltaTime, Rect display) {
+
+        // enemy AI for random movement
         if (movementTimer > movementDuration) {
             movementTimer = 0;
-            movementDuration = (random.nextInt(5) + 1) * 100;
+            movementDuration = (random.nextInt(5) + 1) * 200;
             direction = directions[random.nextInt(directions.length)];
         }
 
         movementTimer += deltaTime;
 
         if (direction.equals("left")) {
-            currentAnimation = 1;
             x = (int) Math.max(display.left + width, x - walkSpeed * deltaTime);
         } else if (direction.equals("right")) {
-            currentAnimation = 0;
             x = (int) Math.min(display.right - width, x + walkSpeed * deltaTime);
         } else if (direction.equals("up")) {
             y = (int) Math.max(display.top + height, y - walkSpeed * deltaTime);
@@ -75,14 +75,8 @@ public class Enemy extends Entity implements Runnable {
         }
 
         rect.set(x, y, x + width, y + height);
-        animations[currentAnimation].update(deltaTime);
 
-        // generate projectile with certain probability
-        double randomNumber = Math.random();
-        if (randomNumber < 0.05 && (direction.equals("left") || direction.equals("right"))) {
-            projectileList.add(new Projectile(x, y + (height / 2), direction, player, playerHealth));
-        }
-
+        // remove unnecessary projectiles
         for (int i = projectileList.size()-1; i >= 0; i--) {
             Projectile projectile = projectileList.get(i);
             projectile.update(deltaTime);
@@ -91,6 +85,8 @@ public class Enemy extends Entity implements Runnable {
                 projectileList.remove(i);
             }
         }
+
+        enemyStateMachine.update(deltaTime);
     }
 
     @Override

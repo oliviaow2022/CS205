@@ -25,9 +25,8 @@ public class Enemies {
     private final Score score;
 
     private final PlayerHealth playerHealth;
-    Bitmap[] rightFrames = new Bitmap[4];
 
-    Bitmap[] leftFrames = new Bitmap[4];
+    private final EnemyFrames enemyFrames = new EnemyFrames();
 
     public Enemies(int number, Rect display, Player player, Score score, PlayerHealth playerHealth) {
         this.display = display;
@@ -36,29 +35,11 @@ public class Enemies {
         this.score = score;
         this.playerHealth = playerHealth;
 
-        Context context = GlobalContext.getInstance().getContext();
-        Bitmap spriteSheetRight = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_robot);
-        int[] xCoordinateRight = {80, 340, 610, 870};
-
-        for (int i = 0; i < xCoordinateRight.length; i++) {
-            Bitmap frame = Bitmap.createBitmap(spriteSheetRight, xCoordinateRight[i], 0, 120, 200);
-            rightFrames[i] = Bitmap.createScaledBitmap(frame, 120, 200, true);
-        }
-
-        Bitmap spriteSheetLeft = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_robot_flip);
-        int[] xCoordinateLeft = {1640, 1910, 2170, 240};
-
-        for (int i = 0; i < xCoordinateLeft.length; i++) {
-            Bitmap frame = Bitmap.createBitmap(spriteSheetLeft, xCoordinateLeft[i], 0, 120, 200);
-            leftFrames[i] = Bitmap.createScaledBitmap(frame, 120, 200, true);
-        }
-
         enemies = new EnemiesThreadPool(number, number, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         for (int i = 0; i < number; i++) {
             int x_pos = (int) Math.round(Math.random() * display.width());
             int y_pos = (int) Math.round(Math.random() * display.height());
-            Animation[] animations = {new Animation(rightFrames, true, 200), new Animation(leftFrames, true, 200)};
-            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, animations, playerHealth));
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, enemyFrames, playerHealth));
         }
     }
     public void draw(Canvas canvas, Paint paint) {
@@ -67,6 +48,8 @@ public class Enemies {
         for (Enemy enemy : activeEnemies) {
             enemy.draw(canvas, paint);
         }
+
+        // canvas.drawBitmap(enemyFrames.leftFrames[3], null, new Rect(player.x, player.y, player.x + 145, player.y + 200), paint);
     }
 
     public void update(long deltaTime, Rect display) {
@@ -77,8 +60,7 @@ public class Enemies {
         if (enemies.hasAvailableSpot()) {
             int x_pos = (int) Math.round(Math.random() * display.width());
             int y_pos = (int) Math.round(Math.random() * display.height());
-            Animation[] animations = {new Animation(rightFrames, true, 200), new Animation(leftFrames, true, 200)};
-            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, animations, playerHealth));
+            enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, enemyFrames, playerHealth));
         }
     }
 }
