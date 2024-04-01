@@ -11,11 +11,7 @@ import android.view.SurfaceHolder;
 
 public class Enemy extends Entity implements Runnable {
     Random random = new Random();
-    int distanceThreshold = random.nextInt(150) + random.nextInt(300);  //enemies dont converge into one
-    int MAX_SPEED = 10;
-    int VISIBILITY = (int)Double.POSITIVE_INFINITY;
     boolean isAlive = true;
-    int health = 100;
     private final Player player;
     private final Score score;
     long movementTimer;
@@ -26,6 +22,7 @@ public class Enemy extends Entity implements Runnable {
     Rect rect;
     PlayerHealth playerHealth;
     int currentAnimation = 0;
+    ArrayList<Projectile> projectileList = new ArrayList<>();
 
     public Enemy(int x, int y, Player player, Score score, Animation[] animations, PlayerHealth playerHealth) {
         super();
@@ -50,14 +47,17 @@ public class Enemy extends Entity implements Runnable {
     }
 
     public void draw(Canvas canvas, Paint paint) {
+        for (Projectile projectile : projectileList) {
+            projectile.draw(canvas, paint);
+        }
         canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(x, y, x + width, y + height), paint);
    }
 
     public void update(long deltaTime, Rect display) {
         if (movementTimer > movementDuration) {
             movementTimer = 0;
-            movementDuration = (new Random().nextInt(5) + 1) * 500;
-            direction = directions[new Random().nextInt(directions.length)];
+            movementDuration = (random.nextInt(5) + 1) * 100;
+            direction = directions[random.nextInt(directions.length)];
         }
 
         movementTimer += deltaTime;
@@ -76,17 +76,33 @@ public class Enemy extends Entity implements Runnable {
 
         rect.set(x, y, x + width, y + height);
         animations[currentAnimation].update(deltaTime);
+
+        // generate projectile with certain probability
+        double randomNumber = Math.random();
+        if (randomNumber < 0.05 && (direction.equals("left") || direction.equals("right"))) {
+            projectileList.add(new Projectile(x, y + (height / 2), direction, player, playerHealth));
+        }
+
+        for (int i = projectileList.size()-1; i >= 0; i--) {
+            Projectile projectile = projectileList.get(i);
+            projectile.update(deltaTime);
+
+            if (!projectile.isAlive) {
+                projectileList.remove(i);
+            }
+        }
     }
 
     @Override
     public void run() {
+        // check for collisions
         while (isAlive) {
-            if (player.playerHitbox.isActivated && player.playerHitbox.rect.intersect(rect)) {
+            if (player.playerHitbox.isActivated && Rect.intersects(player.playerHitbox.rect, this.rect)) {
                 isAlive = false;
                 score.increment();
             }
 
-            if (!player.invulnerable && player.rect.intersect(rect)) {
+            if (!player.invulnerable && Rect.intersects(player.rect, this.rect)) {
                 playerHealth.decrement();
                 player.goInvulnerable(2000);
             }
