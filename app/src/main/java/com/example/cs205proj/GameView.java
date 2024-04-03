@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
-
+import android.content.Intent;
 import androidx.annotation.NonNull;
 
-import com.example.cs205proj.ui.PauseGameButton;
+import com.example.cs205proj.PauseGameButton;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
@@ -89,6 +89,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(long deltaTime) {
         player.update(deltaTime, joystick, display);
         enemies.update(deltaTime, display);
+        if(playerHealth.getHealth() <= 0) {
+            Intent intent = new Intent(getContext(), GameOver.class);
+            getContext().startActivity(intent);
+            gameThread.setRunning(false);
+        }
     }
 
     @Override //draw game objects
