@@ -2,7 +2,6 @@ package com.example.cs205proj;
 
 public class ElapsedTimer {
     private long updateStartTime = 0L;
-
     private boolean initialized = false;
 
     public long getUpdateStartTime() {

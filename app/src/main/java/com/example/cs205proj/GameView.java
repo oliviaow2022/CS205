@@ -38,8 +38,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         display = windowMetrics.getBounds();
 
         playerHealth = new PlayerHealth();
-        enemies = new Enemies(2, display, player, score, playerHealth);
-        background = new Background(context, R.drawable.tile1, 64);
+        enemies = new Enemies(2, display, player, score, playerHealth, background);
+        background = new Background(context, 64);
 
     }
 
@@ -78,7 +78,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long deltaTime) {
-        player.update(deltaTime, joystick, display);
+        player.update(deltaTime, joystick, background);
         enemies.update(deltaTime, display);
     }
 
@@ -89,8 +89,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // Calculate the offset to center the player on the screen
             int offsetX = display.width() / 2 - player.x;
             int offsetY = display.height() / 2 - player.y;
-            background.draw(canvas, offsetX, offsetY, getWidth(), getHeight());
-
+            background.draw(canvas, paint, offsetX, offsetY);
 
             // Save the current canvas state
             canvas.save();
@@ -108,7 +107,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int canvasHeight = getHeight();
             int canvasWidth = getWidth();
 
-            playerHealth.draw(canvas, paint, canvasWidth);
+            playerHealth.draw(canvas, paint);
             joystick.draw(canvas, paint, canvasHeight);
             playerAttackButton.draw(canvas, paint, canvasHeight, canvasWidth);
             score.draw(canvas, paint);
