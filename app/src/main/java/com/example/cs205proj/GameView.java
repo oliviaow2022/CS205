@@ -12,6 +12,9 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
 import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import androidx.annotation.NonNull;
 
 import com.example.cs205proj.PauseGameButton;
@@ -28,9 +31,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final PlayerHealth playerHealth;
     private Background background;
     private final PauseGameButton pauseButton;
+    private Context context;
 
     public GameView(Context context, Player player, Score score) {
         super(context);
+        this.context = context;
         this.player = player;
         this.score = score;
         joystick = new Joystick(context, player);
@@ -79,8 +84,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
-        if (pauseButton.onTouchEvent(event)) {
-            gameThread.setRunning(false);
+        if(pauseButton.onTouchEvent(event)){
+            pauseGame();
         }
         playerAttackButton.onTouchEvent(event);
         return true;
@@ -90,10 +95,46 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         player.update(deltaTime, joystick, background);
         enemies.update(deltaTime, display);
         if(playerHealth.getHealth() <= 0) {
+            gameThread.setRunning(false);
             Intent intent = new Intent(getContext(), GameOver.class);
             getContext().startActivity(intent);
-            gameThread.setRunning(false);
         }
+    }
+    public void pauseGame() {
+        gameThread.setPause();
+        showPauseDialog(context);
+    }
+
+    public void resumeGame() {
+        gameThread.setResume();
+    }
+
+    public void stopGame() {
+        gameThread.setRunning(false);
+    }
+
+    private void showPauseDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Game Paused");
+        builder.setMessage("Choose an option:");
+        builder.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Resume the game
+                dialog.dismiss();
+                resumeGame();
+            }
+        });
+        builder.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Quit the game
+                Intent intent = new Intent(context, GameOver.class);
+                context.startActivity(intent);
+                stopGame();
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override //draw game objects
