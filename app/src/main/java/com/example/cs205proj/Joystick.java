@@ -19,6 +19,7 @@ public class Joystick {
     int x = joystickCenterX;  //this is the varying coordinates of the joystick itself
     int y = joystickCenterY;
     boolean withinCircle = false;
+    Player player;
 
     Bitmap pad;
     Rect padSrcRect, padDstRect;
@@ -30,13 +31,14 @@ public class Joystick {
     int scaledSpriteSize = (int) (300 * scaleFactor);
 
 
-    public Joystick(Context context) {
+    public Joystick(Context context, Player thePlayer) {
         this.pad = BitmapFactory.decodeResource(context.getResources(), R.drawable.pad);
         this.ball = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball);
         padSrcRect = new Rect(0, 0, pad.getWidth(), pad.getHeight());
         padDstRect = new Rect();
         ballSrcRect = new Rect(0, 0, ball.getWidth(), ball.getHeight());
         ballDstRect = new Rect();
+        player = thePlayer;
 
     }
 
@@ -62,6 +64,20 @@ public class Joystick {
         if (action == MotionEvent.ACTION_UP){
             x = joystickCenterX;
             y = joystickCenterY;
+            // if (player.direction.equals("left")){
+            //     x -= 1;
+            // }
+            // else if (player.direction.equals("right")){
+            //     x += 1;
+            // }
+            // else if (player.direction.equals("up")){
+            //     y -= 1;
+            // }
+            // else if (player.direction.equals("down")){
+            //     y += 1;
+            // }
+            // player.velocityX = 0;
+            // player.velocityY = 0;
             withinCircle = false;
         }
         return true;
