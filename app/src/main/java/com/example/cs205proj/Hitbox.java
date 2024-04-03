@@ -53,8 +53,8 @@ public class Hitbox extends Entity {
         }
     
         // Calculate hitbox position relative to player's position
-        int offsetX = player.getX() + finalOffsetX;
-        int offsetY = player.getY() + finalOffsetY;
+        int offsetX = player.getX() + finalOffsetX + 50;
+        int offsetY = player.getY() + finalOffsetY + 100;
     
         // Update hitbox position
         this.x = offsetX;

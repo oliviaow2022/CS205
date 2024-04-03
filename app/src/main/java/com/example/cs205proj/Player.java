@@ -56,25 +56,25 @@ public class Player extends Entity {
         }
     }
 
-    public void update(long deltaTime, Joystick joystick, Rect display) {
+    public void update(long deltaTime, Joystick joystick, Background background) {
         velocityX = joystick.x - joystick.joystickCenterX;
         velocityY = joystick.y - joystick.joystickCenterY;
 
         if (Math.abs(velocityX) >= Math.abs(velocityY)) {
             if (velocityX < 0) {
                 direction = "left";
-                x = (int) Math.max(display.left + width, x - Math.min(maxV,-velocityX) * deltaTime);
+                x = (int) Math.max(0, x - Math.min(maxV,-velocityX) * deltaTime);
             } else if (velocityX > 0){
                 direction = "right";
-                x = (int) Math.min(display.right - width, x + Math.min(maxV,velocityX) * deltaTime);
+                x = (int) Math.min(background.mapWidth - width, x + Math.min(maxV,velocityX) * deltaTime);
             }
         } else {
             if (velocityY < 0) {
                 direction = "up";
-                y = (int) Math.max(display.top + height, y - Math.min(maxV,-velocityY) * deltaTime);
+                y = (int) Math.max(0, y - Math.min(maxV,-velocityY) * deltaTime);
             } else if (velocityY > 0){
                 direction = "down";
-                y = (int) Math.min(display.bottom - height, y + Math.min(maxV,velocityY) * deltaTime);
+                y = (int) Math.min(background.mapHeight - height, y + Math.min(maxV,velocityY) * deltaTime);
             }
         }
 
