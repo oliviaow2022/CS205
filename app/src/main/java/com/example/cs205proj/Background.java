@@ -9,14 +9,15 @@ import android.graphics.Rect;
 
 public class Background {
     private Bitmap spriteSheet;
+    private Bitmap mrtSprite;
     private Rect srcRect;
     private int tileSize;
-
     int mapWidth = 4000;
     int mapHeight = 2000;
 
-    public Background(Context context, int drawableId, int tileSize) {
-        spriteSheet = BitmapFactory.decodeResource(context.getResources(), drawableId);
+    public Background(Context context, int tileSize) {
+        spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile1);
+        mrtSprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.train);
         this.tileSize = tileSize;
         int left = 0;
         int top = 0;
@@ -25,7 +26,7 @@ public class Background {
         srcRect = new Rect(left, top, right, bottom);
     }
 
-    public void draw(Canvas canvas, int offsetX, int offsetY) {
+    public void draw(Canvas canvas, Paint paint, int offsetX, int offsetY) {
         // Calculate the number of tiles needed to cover the screen
         int numTilesX = (mapWidth + tileSize - 1) / tileSize;
         int numTilesY = (mapHeight + tileSize - 1) / tileSize;
@@ -38,8 +39,10 @@ public class Background {
                 int right = left + tileSize;
                 int bottom = top + tileSize;
                 Rect destRect = new Rect(left, top, right, bottom);
-                canvas.drawBitmap(spriteSheet, srcRect, destRect, new Paint());
+                canvas.drawBitmap(spriteSheet, srcRect, destRect, paint);
             }
         }
+
+        canvas.drawBitmap(mrtSprite, offsetX, offsetY, paint);
     }
 }
