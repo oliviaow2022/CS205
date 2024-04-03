@@ -26,6 +26,8 @@ public class Joystick {
 
     Bitmap ball;
     Rect ballSrcRect, ballDstRect;
+    int dirX = 0;
+    int dirY = 0;
 
     float scaleFactor = (radius - 50) * 2.0f / 300;
     int scaledSpriteSize = (int) (300 * scaleFactor);
@@ -60,22 +62,25 @@ public class Joystick {
                 x = (int) (joystickCenterX + (radius - 25) * Math.cos(angle));
                 y = (int) (joystickCenterY + (radius - 25) * Math.sin(angle));
             }
+
+            dirX = x;
+            dirY = y;
         }
         if (action == MotionEvent.ACTION_UP){
             x = joystickCenterX;
             y = joystickCenterY;
-            // if (player.direction.equals("left")){
-            //     x -= 1;
-            // }
-            // else if (player.direction.equals("right")){
-            //     x += 1;
-            // }
-            // else if (player.direction.equals("up")){
-            //     y -= 1;
-            // }
-            // else if (player.direction.equals("down")){
-            //     y += 1;
-            // }
+            if (player.direction.equals("left")){
+                dirX = x- 1;
+            }
+            else if (player.direction.equals("right")){
+                dirX =x+ 1;
+            }
+            else if (player.direction.equals("up")){
+                dirY = y-1;
+            }
+            else if (player.direction.equals("down")){
+                dirY = y+1;
+            }
             // player.velocityX = 0;
             // player.velocityY = 0;
             withinCircle = false;
@@ -116,8 +121,8 @@ public class Joystick {
 
 
     public float[] getJoystickOffset(){
-        float distanceX = x - joystickCenterX;
-        float distanceY = y - joystickCenterY;
+        float distanceX = dirX - joystickCenterX;
+        float distanceY = dirY - joystickCenterY;
         float[] result = {distanceX,distanceY};
         return result;
     }
