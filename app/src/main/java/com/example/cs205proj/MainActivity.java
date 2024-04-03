@@ -26,9 +26,9 @@ public class MainActivity extends Activity {
         score = new Score(this);
         GameView gameView = new GameView(this, player, score);
         setContentView(gameView);
-        backgroundMusic = MediaPlayer.create(MainActivity.this, R.raw.battle_music);
-        backgroundMusic.setLooping(true);
-        backgroundMusic.start();
+        // backgroundMusic = MediaPlayer.create(MainActivity.this, R.raw.battle_music);
+        // backgroundMusic.setLooping(true);
+        // backgroundMusic.start();
 
         if (savedInstanceState != null) {
             player.restoreInstanceState(savedInstanceState);
