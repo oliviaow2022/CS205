@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.Typeface;
+import androidx.core.content.res.ResourcesCompat;
 
 public class TitleScreen extends AppCompatActivity {
 
@@ -29,7 +31,9 @@ public class TitleScreen extends AppCompatActivity {
 
 //      REQUIREMENT create / get data from sqlLite
         db = DatabaseHelper.getInstance(this, "Game");
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.space_normal);
         TextView highscore = findViewById(R.id.highscore);
+        highscore.setTypeface(typeface);
         highscore.setText("Highscore: " + db.getLatestScore());
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
