@@ -1,7 +1,6 @@
 package com.example.cs205proj;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,7 +17,6 @@ import com.example.cs205proj.MainActivity;
 public class PauseGameButton extends View{
     private int screenWidth, screenHeight;
     private Paint paint;
-    private boolean isPaused = false;
     private Context context;
     private Bitmap pauseButtonImage;
     private int pauseButton_x_offset = 0;
@@ -57,14 +55,6 @@ public class PauseGameButton extends View{
     }
 
     @Override
-    public boolean performClick() {
-        isPaused = !isPaused;
-        Intent intent = new Intent(context, GameOver.class);
-        context.startActivity(intent);
-        return true;
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             float x = event.getX();
@@ -72,8 +62,6 @@ public class PauseGameButton extends View{
             if (x >= pauseButton_x_offset && x <= pauseButton_x_offset + pauseButtonImage.getWidth()
                 && y >= pauseButton_y_offset && y <= pauseButton_y_offset + pauseButtonImage.getHeight()) {
                 // Click is within the bounds of the button
-                isPaused = !isPaused;
-                performClick();
                 return true; // Consume the event
             }
         }
