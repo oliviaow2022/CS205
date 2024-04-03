@@ -8,16 +8,18 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Background {
-    private Bitmap spriteSheet;
-    private Bitmap mrtSprite;
-    private Rect srcRect;
-    private int tileSize;
+    private final Bitmap spriteSheet;
+    private final Bitmap mrtSprite;
+    private final Bitmap chairsSprite;
+    private final Rect srcRect;
+    private final int tileSize;
     int mapWidth = 4000;
     int mapHeight = 2000;
 
     public Background(Context context, int tileSize) {
         spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile1);
         mrtSprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.train);
+        chairsSprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.chairs);
         this.tileSize = tileSize;
         int left = 0;
         int top = 0;
@@ -43,6 +45,13 @@ public class Background {
             }
         }
 
-        canvas.drawBitmap(mrtSprite, offsetX, offsetY, paint);
+        // draw train
+        canvas.drawBitmap(mrtSprite, offsetX, offsetY - 248, paint);
+
+        // draw chairs
+        int numChairs = mapWidth / 912;
+        for (int i = 0; i < numChairs; i++) {
+            canvas.drawBitmap(chairsSprite, offsetX + i * 1000, offsetY + 500, paint);
+        }
     }
 }

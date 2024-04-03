@@ -41,7 +41,7 @@ public class PlayerHealth {
         }
     }
 
-    public void draw(Canvas canvas, Paint paint, int canvasWidth) {
+    public void draw(Canvas canvas, Paint paint) {
         this.x = 100;
         this.y = 150;
 

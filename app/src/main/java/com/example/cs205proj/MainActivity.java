@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
         globalContext.setContext(this);
 
         db = DatabaseHelper.getInstance(this, "Game");
-        player = new Player(380, 150);
+        player = new Player(390, 0);
         score = new Score(this);
         GameView gameView = new GameView(this, player, score);
         setContentView(gameView);

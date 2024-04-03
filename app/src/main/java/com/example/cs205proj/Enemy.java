@@ -65,13 +65,13 @@ public class Enemy extends Entity implements Runnable {
         movementTimer += deltaTime;
 
         if (direction.equals("left")) {
-            x = (int) Math.max(display.left, x - walkSpeed * deltaTime);
+            x = (int) Math.max(0, x - walkSpeed * deltaTime);
         } else if (direction.equals("right")) {
-            x = (int) Math.min(display.right - width, x + walkSpeed * deltaTime);
+            x = (int) Math.min(4000 - width, x + walkSpeed * deltaTime);
         } else if (direction.equals("up")) {
-            y = (int) Math.max(display.top, y - walkSpeed * deltaTime);
+            y = (int) Math.max(0, y - walkSpeed * deltaTime);
         } else if (direction.equals("down")) {
-            y = (int) Math.min(display.bottom - height, y + walkSpeed * deltaTime);
+            y = (int) Math.min(2000 - height, y + walkSpeed * deltaTime);
         }
 
         rect.set(x, y, x + width, y + height);

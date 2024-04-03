@@ -38,7 +38,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         display = windowMetrics.getBounds();
 
         playerHealth = new PlayerHealth();
-        enemies = new Enemies(2, display, player, score, playerHealth);
+        enemies = new Enemies(2, display, player, score, playerHealth, background);
         background = new Background(context, 64);
 
     }
@@ -107,7 +107,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int canvasHeight = getHeight();
             int canvasWidth = getWidth();
 
-            playerHealth.draw(canvas, paint, canvasWidth);
+            playerHealth.draw(canvas, paint);
             joystick.draw(canvas, paint, canvasHeight);
             playerAttackButton.draw(canvas, paint, canvasHeight, canvasWidth);
             score.draw(canvas, paint);
