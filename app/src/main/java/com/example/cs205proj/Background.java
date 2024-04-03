@@ -12,6 +12,9 @@ public class Background {
     private Rect srcRect;
     private int tileSize;
 
+    int mapWidth = 4000;
+    int mapHeight = 2000;
+
     public Background(Context context, int drawableId, int tileSize) {
         spriteSheet = BitmapFactory.decodeResource(context.getResources(), drawableId);
         this.tileSize = tileSize;
@@ -22,10 +25,10 @@ public class Background {
         srcRect = new Rect(left, top, right, bottom);
     }
 
-    public void draw(Canvas canvas, int offsetX, int offsetY, int screenWidth, int screenHeight) {
+    public void draw(Canvas canvas, int offsetX, int offsetY) {
         // Calculate the number of tiles needed to cover the screen
-        int numTilesX = (screenWidth + tileSize - 1) / tileSize;
-        int numTilesY = (screenHeight + tileSize - 1) / tileSize;
+        int numTilesX = (mapWidth + tileSize - 1) / tileSize;
+        int numTilesY = (mapHeight + tileSize - 1) / tileSize;
 
         // Draw the tiles to cover the entire screen
         for (int i = 0; i < numTilesX; i++) {

@@ -78,7 +78,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long deltaTime) {
-        player.update(deltaTime, joystick, display);
+        player.update(deltaTime, joystick, background);
         enemies.update(deltaTime, display);
     }
 
@@ -89,7 +89,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // Calculate the offset to center the player on the screen
             int offsetX = display.width() / 2 - player.x;
             int offsetY = display.height() / 2 - player.y;
-            background.draw(canvas, offsetX, offsetY, getWidth(), getHeight());
+            background.draw(canvas, offsetX, offsetY);
 
 
             // Save the current canvas state
