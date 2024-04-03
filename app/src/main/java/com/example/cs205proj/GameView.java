@@ -79,7 +79,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
-        pauseButton.onTouchEvent(event);
+        if (pauseButton.onTouchEvent(event)) {
+            gameThread.setRunning(false);
+        }
         playerAttackButton.onTouchEvent(event);
         return true;
     }

@@ -27,16 +27,6 @@ public class PauseGameButton extends View{
         init();
     }
 
-//    public PauseGameButton(Context context, AttributeSet attrs) {
-//        super(context, attrs);
-//        init();
-//    }
-//
-//    public PauseGameButton(Context context, AttributeSet attrs, int defStyleAttr) {
-//        super(context, attrs, defStyleAttr);
-//        init();
-//    }
-
     private void init() {
         paint = new Paint();
         paint.setColor(Color.WHITE);
