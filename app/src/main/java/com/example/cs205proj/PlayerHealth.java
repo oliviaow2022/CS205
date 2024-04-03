@@ -15,7 +15,6 @@ public class PlayerHealth {
     private final Bitmap scaledEmptyHeart;
     private int x;
     private int y;
-
     private int health;
     private final int maxHealth = 5;
 
@@ -51,5 +50,9 @@ public class PlayerHealth {
         for (int i = health; i < maxHealth; i++) {
             canvas.drawBitmap(scaledEmptyHeart, null, new Rect(x+100*i, y, x+100*(i+1), y+100), paint);
         }
+    }
+
+    public int getHealth(){
+        return this.health;
     }
 }

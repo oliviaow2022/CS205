@@ -7,8 +7,14 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
+import android.content.Intent;
+import androidx.annotation.NonNull;
+
+import com.example.cs205proj.PauseGameButton;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
@@ -21,7 +27,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final AttackButton playerAttackButton;
     private final PlayerHealth playerHealth;
     private Background background;
-
+    private final PauseGameButton pauseButton;
 
     public GameView(Context context, Player player, Score score) {
         super(context);
@@ -40,7 +46,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         playerHealth = new PlayerHealth();
         enemies = new Enemies(2, display, player, score, playerHealth, background);
         background = new Background(context, 64);
-
+        pauseButton = new PauseGameButton(context);
     }
 
     @Override
@@ -54,7 +60,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         display.set(0, 0, width, height);
-
+        pauseButton.setDimensions(width, height);
     }
 
     @Override
@@ -73,6 +79,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         joystick.onTouchEvent(event);
+        if (pauseButton.onTouchEvent(event)) {
+            gameThread.setRunning(false);
+        }
         playerAttackButton.onTouchEvent(event);
         return true;
     }
@@ -80,6 +89,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(long deltaTime) {
         player.update(deltaTime, joystick, background);
         enemies.update(deltaTime, display);
+        if(playerHealth.getHealth() <= 0) {
+            Intent intent = new Intent(getContext(), GameOver.class);
+            getContext().startActivity(intent);
+            gameThread.setRunning(false);
+        }
     }
 
     @Override //draw game objects
@@ -111,6 +125,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             joystick.draw(canvas, paint, canvasHeight);
             playerAttackButton.draw(canvas, paint, canvasHeight, canvasWidth);
             score.draw(canvas, paint);
+            pauseButton.draw(canvas);
         }
     }
 } 
