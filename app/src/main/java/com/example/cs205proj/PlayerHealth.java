@@ -17,7 +17,6 @@ public class PlayerHealth {
     private int y;
     private int health;
     private final int maxHealth = 5;
-
     private Lock mutex = new ReentrantLock();
 
     public PlayerHealth() {

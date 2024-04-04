@@ -69,16 +69,16 @@ public class Joystick {
         if (action == MotionEvent.ACTION_UP){
             x = joystickCenterX;
             y = joystickCenterY;
-            if (player.direction.equals("left")){
+            if (player.getDirection().equals("left")){
                 dirX = x- 1;
             }
-            else if (player.direction.equals("right")){
+            else if (player.getDirection().equals("right")){
                 dirX =x+ 1;
             }
-            else if (player.direction.equals("up")){
+            else if (player.getDirection().equals("up")){
                 dirY = y-1;
             }
-            else if (player.direction.equals("down")){
+            else if (player.getDirection().equals("down")){
                 dirY = y+1;
             }
             // player.velocityX = 0;

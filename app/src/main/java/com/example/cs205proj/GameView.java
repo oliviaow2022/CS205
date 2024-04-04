@@ -142,8 +142,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         if (canvas != null) {
             // Calculate the offset to center the player on the screen
-            int offsetX = display.width() / 2 - player.x;
-            int offsetY = display.height() / 2 - player.y;
+            int offsetX = display.width() / 2 - player.getX();
+            int offsetY = display.height() / 2 - player.getY();
             background.draw(canvas, paint, offsetX, offsetY);
 
             // Save the current canvas state

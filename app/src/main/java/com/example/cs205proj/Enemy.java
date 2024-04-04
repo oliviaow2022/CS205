@@ -93,12 +93,12 @@ public class Enemy extends Entity implements Runnable {
     public void run() {
         // check for collisions
         while (isAlive) {
-            if (player.playerHitbox.isActivated && Rect.intersects(player.playerHitbox.rect, this.rect)) {
+            if (player.getHitbox().isActivated && Rect.intersects(player.getHitbox().rect, this.rect)) {
                 isAlive = false;
                 score.increment();
             }
 
-            if (!player.invulnerable && Rect.intersects(player.rect, this.rect)) {
+            if (!player.isInvulnerable() && Rect.intersects(player.getRect(), this.rect)) {
                 playerHealth.decrement();
                 player.goInvulnerable(2000);
             }

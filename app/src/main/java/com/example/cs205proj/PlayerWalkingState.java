@@ -26,7 +26,7 @@ public class PlayerWalkingState extends BaseState {
 
             for (int j = 0; j < xCoordinate.length; j++) {
                 Bitmap frame = Bitmap.createBitmap(spriteSheet, xCoordinate[j], yCoordinate[i], 45, 90); // (Bitmap, x, y, width, height)
-                frames[j] = Bitmap.createScaledBitmap(frame, player.width, player.height,true);
+                frames[j] = Bitmap.createScaledBitmap(frame, player.getWidth(), player.getHeight(),true);
             }
 
             animations[i] = new Animation(frames, true, 200);
@@ -39,17 +39,17 @@ public class PlayerWalkingState extends BaseState {
     }
 
     public void update(long deltaTime) {
-        if (player.velocityX == 0 && player.velocityY == 0) {
-            player.playerStateMachine.changeState("idle");
+        if (player.getVelocityX() == 0 && player.getVelocityY() == 0) {
+            player.getPlayerStateMachine().changeState("idle");
         }
 
-        if (player.direction.equals("down")) {
+        if (player.getDirection().equals("down")) {
             currentAnimation = 0;
-        } else if (player.direction.equals("right")) {
+        } else if (player.getDirection().equals("right")) {
             currentAnimation = 1;
-        } else if (player.direction.equals("up")) {
+        } else if (player.getDirection().equals("up")) {
             currentAnimation = 2;
-        } else if (player.direction.equals("left")) {
+        } else if (player.getDirection().equals("left")) {
             currentAnimation = 3;
         }
 
@@ -57,6 +57,6 @@ public class PlayerWalkingState extends BaseState {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(player.x, player.y, player.x + player.width, player.y + player.height), paint);
+        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(player.getX(), player.getY(), player.getX() + player.getWidth(), player.getY() + player.getHeight()), paint);
     }
 }

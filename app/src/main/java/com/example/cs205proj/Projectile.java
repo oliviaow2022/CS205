@@ -58,12 +58,12 @@ public class Projectile {
     }
 
     public void handlePlayerCollision() {
-        if (!player.invulnerable && this.isAlive && Rect.intersects(player.rect, this.rect)) {
+        if (!player.isInvulnerable() && this.isAlive && Rect.intersects(player.getRect(), this.rect)) {
             playerHealth.decrement();
             player.goInvulnerable(2000);
         }
 
-        if (player.playerHitbox.isActivated && Rect.intersects(player.playerHitbox.rect, this.rect)) {
+        if (player.getHitbox().isActivated && Rect.intersects(player.getHitbox().rect, this.rect)) {
             isAlive = false;
         }
     }
