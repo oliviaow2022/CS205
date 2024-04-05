@@ -19,10 +19,10 @@ public class EnemyStateMachine {
 
     public void changeState(String state) {
         if (state.equals("shoot")) {
-            enemy.width = 140;
+            enemy.setWidth(140);
             currentState = enemyShootState;
         } else if (state.equals("walk")) {
-            enemy.width = 120;
+            enemy.setWidth(120);
             currentState = enemyWalkingState;
         }
     }

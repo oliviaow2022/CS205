@@ -21,7 +21,7 @@ public class PlayerIdleState extends BaseState {
 
         for (int i = 0; i < yCoordinate.length; i++) {
             Bitmap frame = Bitmap.createBitmap(spriteSheet, 0, yCoordinate[i], 45, 90); // (Bitmap, x, y, width, height)
-            frames[i] = Bitmap.createScaledBitmap(frame, player.width, player.height,true);
+            frames[i] = Bitmap.createScaledBitmap(frame, player.getWidth(), player.getHeight(),true);
         }
     }
 
@@ -30,18 +30,18 @@ public class PlayerIdleState extends BaseState {
             player.playerStateMachine.changeState("walk");
         }
 
-        if (player.direction.equals("down")) {
+        if (player.getDirection().equals("down")) {
             currentAnimation = 0;
-        } else if (player.direction.equals("right")) {
+        } else if (player.getDirection().equals("right")) {
             currentAnimation = 1;
-        } else if (player.direction.equals("up")) {
+        } else if (player.getDirection().equals("up")) {
             currentAnimation = 2;
-        } else if (player.direction.equals("left")) {
+        } else if (player.getDirection().equals("left")) {
             currentAnimation = 3;
         }
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(frames[currentAnimation], null, new Rect(player.x, player.y, player.x + player.width, player.y + player.height), paint);
+        canvas.drawBitmap(frames[currentAnimation], null, new Rect(player.getX(), player.getY(), player.getX() + player.getWidth(), player.getY() + player.getHeight()), paint);
     }
 }

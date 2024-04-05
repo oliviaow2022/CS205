@@ -8,10 +8,10 @@ import android.os.Bundle;
 
 public class Player extends Entity {
     int maxV = 1;
-    final Hitbox playerHitbox;
+    private final Hitbox playerHitbox;
     final PlayerStateMachine playerStateMachine;
     Rect rect;
-    boolean invulnerable = false;
+    private boolean invulnerable = false;
     int invulnerableDuration = 0;
     long invulnerableTimer = 0;
     long flashTimer = 0;
@@ -95,25 +95,15 @@ public class Player extends Entity {
         rect.set(x, y, x + width, y + height);
     }
 
-    public int getVelocityX(){
-        return this.velocityX;
-    }
-
-    public int getVelocityY(){
-        return this.velocityY;
-    }
-
-    public int getX(){
-        return this.x;
-    }
-
-    public int getY(){
-        return this.y;
-    }
+    public PlayerStateMachine getPlayerStateMachine() { return this.playerStateMachine; }
 
     public Hitbox getHitbox(){
         return this.playerHitbox;
     }
+
+    public boolean isInvulnerable() { return this.invulnerable; }
+
+    public Rect getRect() { return this.rect; }
 
     public void goInvulnerable(int invulnerableDuration) {
         invulnerable = true;

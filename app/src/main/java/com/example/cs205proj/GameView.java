@@ -7,17 +7,11 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
 import android.content.Intent;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import androidx.annotation.NonNull;
-
-import com.example.cs205proj.PauseGameButton;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread gameThread;
@@ -94,9 +88,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(long deltaTime) {
         player.update(deltaTime, joystick, background);
         enemies.update(deltaTime, display);
-        if(playerHealth.getHealth() <= 0) {
+        if (playerHealth.getHealth() <= 0) {
             gameThread.setRunning(false);
             Intent intent = new Intent(getContext(), GameOver.class);
+            getContext().startActivity(intent);
+        }
+        if (Rect.intersects(background.getGoalRect(), player.getRect())) {
+            System.out.println("GOALLLLLL");
+            gameThread.setRunning(false);
+            System.out.println("game stopped running");
+            Intent intent = new Intent(getContext(), GameWin.class);
             getContext().startActivity(intent);
         }
     }
@@ -142,8 +143,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         if (canvas != null) {
             // Calculate the offset to center the player on the screen
-            int offsetX = display.width() / 2 - player.x;
-            int offsetY = display.height() / 2 - player.y;
+            int offsetX = display.width() / 2 - player.getX();
+            int offsetY = display.height() / 2 - player.getY();
             background.draw(canvas, paint, offsetX, offsetY);
 
             // Save the current canvas state

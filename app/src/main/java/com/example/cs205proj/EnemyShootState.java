@@ -18,7 +18,7 @@ public class EnemyShootState extends BaseState {
     }
 
     public void update(long deltaTime) {
-        if (enemy.direction.equals("left")) {
+        if (enemy.getDirection().equals("left")) {
             currentAnimation = 1;
         }
 
@@ -31,6 +31,6 @@ public class EnemyShootState extends BaseState {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(enemy.x, enemy.y, enemy.x + enemy.width, enemy.y + enemy.height), paint);
+        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(enemy.getX(), enemy.getY(), enemy.getX() + enemy.getWidth(), enemy.getY() + enemy.getHeight()), paint);
     }
 }

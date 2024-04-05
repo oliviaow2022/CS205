@@ -28,13 +28,13 @@ public class PlayerStateMachine {
     public void changeState(String state) {
         if (state.equals("idle")) {
             currentState = playerIdleState;
-            player.width = 100;
+            player.setWidth(100);
         } else if (state.equals("walk")) {
             currentState = playerWalkingState;
-            player.width = 100;
+            player.setWidth(100);
         } else if (state.equals("swing-sword")) {
             currentState = playerSwingSwordState;
-            player.width = 200;
+            player.setWidth(200);
         }
     }
 

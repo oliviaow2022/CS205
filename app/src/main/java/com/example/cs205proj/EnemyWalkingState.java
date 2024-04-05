@@ -17,16 +17,16 @@ public class EnemyWalkingState extends BaseState {
     }
 
     public void update(long deltaTime) {
-        if (enemy.direction.equals("left")) {
+        if (enemy.getDirection().equals("left")) {
             currentAnimation = 1;
-        } else if (enemy.direction.equals("right")) {
+        } else if (enemy.getDirection().equals("right")) {
             currentAnimation = 0;
         }
 
         // generate projectile with certain probability
         double randomNumber = Math.random();
-        if (randomNumber < 0.05 && (enemy.direction.equals("left") || enemy.direction.equals("right"))) {
-            enemy.projectileList.add(new Projectile(enemy.x - 50, enemy.y + (enemy.height / 2), enemy.direction, enemy.player, enemy.playerHealth));
+        if (randomNumber < 0.05 && (enemy.getDirection().equals("left") || enemy.getDirection().equals("right"))) {
+            enemy.projectileList.add(new Projectile(enemy.getX() - 50, enemy.getY() + (enemy.getHeight() / 2), enemy.getDirection(), enemy.player, enemy.playerHealth));
             enemy.enemyStateMachine.changeState("shoot");
         }
 
@@ -34,6 +34,6 @@ public class EnemyWalkingState extends BaseState {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(enemy.x, enemy.y, enemy.x + enemy.width, enemy.y + enemy.height), paint);
+        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(enemy.getX(), enemy.getY(), enemy.getX() + enemy.getWidth(), enemy.getY() + enemy.getHeight()), paint);
     }
 }

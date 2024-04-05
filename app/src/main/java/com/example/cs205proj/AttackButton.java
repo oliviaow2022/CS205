@@ -34,7 +34,7 @@ public class AttackButton {
     public void draw(Canvas canvas, Paint paint, int height, int width) {
         buttonCenterX = (int)(width - 2*radius);
         buttonCenterY = (int)(height - 50 - 1.5*radius);
-        paint.setColor(Color.GREEN); //Placeholder color
+        paint.setColor(Color.GRAY); //Placeholder color
         canvas.drawCircle(buttonCenterX, buttonCenterY, radius, paint);
     }
 }
