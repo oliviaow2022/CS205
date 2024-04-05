@@ -96,6 +96,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if (Rect.intersects(background.getGoalRect(), player.getRect())) {
             System.out.println("GOALLLLLL");
             gameThread.setRunning(false);
+            System.out.println("game stopped running");
             Intent intent = new Intent(getContext(), GameWin.class);
             getContext().startActivity(intent);
         }
