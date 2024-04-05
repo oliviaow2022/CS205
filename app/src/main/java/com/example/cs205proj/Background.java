@@ -66,8 +66,8 @@ public class Background {
         canvas.drawBitmap(computerSprite, offsetX + numTilesX * tileSize - 64 * 4, offsetY + numTilesY * tileSize - 28 * 9, paint);
 
         goalRect.set(offsetX + numTilesX * tileSize - 64 * 4, offsetY + numTilesY * tileSize - 28 * 7, offsetX + numTilesX * tileSize, offsetY + numTilesY * tileSize);
-        // paint.setColor(Color.RED);
-        // canvas.drawRect(goalRect, paint);
+         paint.setColor(Color.RED);
+         canvas.drawRect(goalRect, paint);
     }
 
     public Rect getGoalRect() {

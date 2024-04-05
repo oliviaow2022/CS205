@@ -88,12 +88,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void update(long deltaTime) {
         player.update(deltaTime, joystick, background);
         enemies.update(deltaTime, display);
-        if (Rect.intersects(background.getGoalRect(), player.getRect())) {
-            System.out.println("GOALLLLLL");
-        }
         if (playerHealth.getHealth() <= 0) {
             gameThread.setRunning(false);
             Intent intent = new Intent(getContext(), GameOver.class);
+            getContext().startActivity(intent);
+        }
+        if (Rect.intersects(background.getGoalRect(), player.getRect())) {
+            System.out.println("GOALLLLLL");
+            gameThread.setRunning(false);
+            Intent intent = new Intent(getContext(), GameWin.class);
             getContext().startActivity(intent);
         }
     }
