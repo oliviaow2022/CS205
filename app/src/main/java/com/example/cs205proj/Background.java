@@ -56,9 +56,13 @@ public class Background {
         canvas.drawBitmap(mrtSprite, offsetX, offsetY - 248, paint);
 
         // draw chairs
-        int numChairs = mapWidth / 912;
-        for (int i = 0; i < numChairs; i++) {
-            canvas.drawBitmap(chairsSprite, offsetX + i * 1000, offsetY + 500, paint);
+        int numColumnChairs = mapWidth / (1000);
+        int numRowChairs = mapHeight / (500);
+
+        for (int i = 0; i < numColumnChairs; i++) {
+            for (int j = 1; j < numRowChairs; j++) {
+                canvas.drawBitmap(chairsSprite, offsetX + i * 1000, offsetY + j * 500, paint);
+            }
         }
 
         // draw end goal: control centre
