@@ -7,6 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+/*
+ * EnemyFrames loads all the sprites for efficiency
+ * separately from the generation of enemies
+ */
+
 public class EnemyFrames {
     Bitmap[] leftFrames = new Bitmap[4];
     Bitmap[] rightFrames = new Bitmap[4];

@@ -4,6 +4,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+/*
+ * In the walking state, the enemy shoots a projectile with a specified probability
+ * The projectile will be added to the enemy's ArrayList
+ * and the enemy transitions to the shoot state
+ */
 public class EnemyWalkingState extends BaseState {
     int currentAnimation = 0;
     Enemy enemy;

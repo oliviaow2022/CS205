@@ -9,19 +9,25 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
+/*
+ * If the player collides into an enemy, health decreases by 1.
+ * If the player hits an enemy, the enemy dies.
+ */
+
 public class Enemy extends Entity implements Runnable {
     Random random = new Random();
     boolean isAlive = true;
     final Player player;
     private final Score score;
+
+    // variables for enemy AI
     long movementTimer;
     int movementDuration;
-    int walkSpeed = 1;
-    String[] directions = {"left", "right", "up", "down"};
-    Rect rect;
+    private final int walkSpeed = 1;
+    private final String[] directions = {"left", "right", "up", "down"};
+    private Rect rect;
     PlayerHealth playerHealth;
     ArrayList<Projectile> projectileList = new ArrayList<>();
-    EnemyFrames enemyFrames;
     final EnemyStateMachine enemyStateMachine;
     public Enemy(int x, int y, Player player, Score score, EnemyFrames enemyFrames, PlayerHealth playerHealth) {
         super();
@@ -34,7 +40,6 @@ public class Enemy extends Entity implements Runnable {
         this.player = player;
         this.score = score;
         this.playerHealth = playerHealth;
-        this.enemyFrames = enemyFrames;
         this.enemyStateMachine = new EnemyStateMachine(this, enemyFrames);
         this.rect = new Rect(x, y, x + width, y + height);
     }
@@ -61,9 +66,9 @@ public class Enemy extends Entity implements Runnable {
             movementDuration = (random.nextInt(5) + 1) * 200;
             direction = directions[random.nextInt(directions.length)];
         }
-
         movementTimer += deltaTime;
 
+        // update enemy movement
         if (direction.equals("left")) {
             x = (int) Math.max(0, x - walkSpeed * deltaTime);
         } else if (direction.equals("right")) {
@@ -74,6 +79,7 @@ public class Enemy extends Entity implements Runnable {
             y = (int) Math.min(2000 - height, y + walkSpeed * deltaTime);
         }
 
+        // update collision rectangle
         rect.set(x, y, x + width, y + height);
 
         // remove unnecessary projectiles
@@ -86,6 +92,7 @@ public class Enemy extends Entity implements Runnable {
             }
         }
 
+        // update enemy animation
         enemyStateMachine.update(deltaTime);
     }
 

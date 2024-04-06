@@ -10,6 +10,10 @@ import android.graphics.Rect;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/*
+ * PlayerHealth manages player's health and renders it on screen
+ * Health is locked by a mutex
+ */
 public class PlayerHealth {
     private final Bitmap emptyHeart;
     private final Bitmap fullHeart;

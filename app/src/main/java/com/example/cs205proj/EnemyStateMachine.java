@@ -3,6 +3,10 @@ package com.example.cs205proj;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+/*
+ * Enemy has 2 states: walking and shoot
+ * Transitions between states are done from the currently active state
+ */
 public class EnemyStateMachine {
     private final Enemy enemy;
     private final EnemyWalkingState enemyWalkingState;
