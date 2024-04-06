@@ -23,9 +23,6 @@ public class TitleScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_title_screen);
         Button buttonStart = findViewById(R.id.button_start);
-        playBackgroundMusic(TitleScreen.this, R.raw.title_music);
-
-
 //        delete db if needed
 //        this.deleteDatabase("Game");
 
@@ -49,6 +46,12 @@ public class TitleScreen extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         stopBackgroundMusic();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        playBackgroundMusic(TitleScreen.this, R.raw.title_music);
     }
 
     @Override

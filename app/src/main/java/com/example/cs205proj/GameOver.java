@@ -15,7 +15,6 @@ public class GameOver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
         Button buttonStart = findViewById(R.id.button_start);
-        playOnce(GameOver.this, R.raw.lose_music);
         buttonStart.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -32,6 +31,11 @@ public class GameOver extends AppCompatActivity {
         super.onPause();
         stopBackgroundMusic();
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        playOnce(GameOver.this, R.raw.lose_music);
     }
 
     @Override

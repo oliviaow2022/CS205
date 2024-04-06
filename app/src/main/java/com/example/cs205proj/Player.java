@@ -1,5 +1,6 @@
 package com.example.cs205proj;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,7 +17,7 @@ public class Player extends Entity {
     long invulnerableTimer = 0;
     long flashTimer = 0;
 
-    public Player(int x, int y) {
+    public Player(int x, int y, Context context) {
         super();
         this.x = x;
         this.y = y;
@@ -25,7 +26,7 @@ public class Player extends Entity {
         this.height = 200; //current height of player
         this.velocityX = 0;
         this.velocityY = 0;
-        this.playerHitbox = new Hitbox(this);
+        this.playerHitbox = new Hitbox(context,this);
         this.playerStateMachine = new PlayerStateMachine(this);
 
         rect = new Rect(x, y, x + width, y + height);

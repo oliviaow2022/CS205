@@ -1,5 +1,8 @@
 package com.example.cs205proj;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,25 +14,35 @@ public class Hitbox extends Entity {
     long timeActivated;
     boolean isActivated = false;
 
-    public Hitbox(Player player) {
+    Bitmap reticle;
+    Bitmap reticleActive;
+
+    public Hitbox(Context context, Player player) {
         super();
         this.player = player;
         rect = new Rect(x, y, x + width, y + height); // create rectangle object for drawing and collision
         this.x = player.getX();
         this.y = player.getY();
-        this.width = 100;
-        this.height = 100;
+        this.width = 150;
+        this.height = 150;
         this.velocityX = 0;
         this.velocityY = 0;
+        this.reticle = BitmapFactory.decodeResource(context.getResources(), R.drawable.reticle1);
+        this.reticleActive = BitmapFactory.decodeResource(context.getResources(), R.drawable.reticle);
+
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        // player is currently a circle
-        paint.setColor(Color.BLUE);
-        if (this.isActivated == true){
-            paint.setColor(Color.YELLOW);
+
+        // Draw the sprite
+        if (reticle != null && reticleActive != null) {
+            Rect destRect = new Rect(x, y, x + width, y + height);
+            if (isActivated) {
+                canvas.drawBitmap(reticleActive, null, destRect, paint);
+            } else {
+                canvas.drawBitmap(reticle, null, destRect, paint);
+            }
         }
-        canvas.drawRect(rect, paint);
     }
 
     public void update(Joystick joystick) { // updates the hitbox position to correspond to being next to player

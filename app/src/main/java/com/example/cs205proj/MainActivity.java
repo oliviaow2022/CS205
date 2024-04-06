@@ -21,9 +21,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         GlobalContext globalContext = GlobalContext.getInstance();
         globalContext.setContext(this);
-        playBackgroundMusic(MainActivity.this, R.raw.battle_music);
         db = DatabaseHelper.getInstance(this, "Game");
-        player = new Player(390, 0);
+        player = new Player(390, 0, MainActivity.this);
         score = new Score(this);
         GameView gameView = new GameView(this, player, score);
         setContentView(gameView);
@@ -65,6 +64,11 @@ public class MainActivity extends Activity {
 //        System.out.println("Stopping from Main");
 //        stopBackgroundMusic();
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        playBackgroundMusic(MainActivity.this, R.raw.battle_music);
     }
 
     @Override

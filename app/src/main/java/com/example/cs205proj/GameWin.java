@@ -16,7 +16,6 @@ public class GameWin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_win);
         Button buttonStart = findViewById(R.id.button_start);
-        playOnce(GameWin.this, R.raw.win_music);
         System.out.println("Playing Win!");
         buttonStart.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -42,6 +41,11 @@ public class GameWin extends AppCompatActivity {
 //        System.out.println("Stopping from Win");
 //        stopBackgroundMusic();
         // Release any resources here if needed
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        playOnce(GameWin.this, R.raw.win_music);
     }
 
     @Override
