@@ -70,6 +70,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 enemies.end();
                 gameThread.setRunning(false);
                 gameThread.join();
+                System.out.println("surface destroyed");
+                break;
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 System.out.println(e);
@@ -113,8 +115,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void stopGame() {
-        enemies.end();
-        gameThread.setRunning(false);
+//        enemies.end();
+//        gameThread.setRunning(false);
+        try {
+            enemies.end();
+            gameThread.setRunning(false);
+            gameThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
     }
 
     private void showPauseDialog(Context context) {
