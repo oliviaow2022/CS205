@@ -1,8 +1,12 @@
 package com.example.cs205proj;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 
 public class AttackButton {
@@ -10,9 +14,18 @@ public class AttackButton {
     int buttonCenterY;
     final int radius = 150; // Radius of the attack button
     Hitbox playerHitbox;
+    Bitmap button;
+    Rect src, dest;
+    float scaleFactor = (radius - 50) * 2.0f / 300;
+    int scaledSpriteSize = (int) (300 * scaleFactor);
 
-    public AttackButton(Hitbox insertedHitbox) {
+
+    public AttackButton(Context context, Hitbox insertedHitbox) {
         this.playerHitbox = insertedHitbox;
+        this.button = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack);
+        this.src = new Rect(0, 0, button.getWidth(), button.getHeight());
+        this.dest = new Rect(buttonCenterX - radius, buttonCenterY - radius,
+                buttonCenterX + radius, buttonCenterY + radius);
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -35,6 +48,14 @@ public class AttackButton {
         buttonCenterX = (int)(width - 2*radius);
         buttonCenterY = (int)(height - 50 - 1.5*radius);
         paint.setColor(Color.GRAY); //Placeholder color
-        canvas.drawCircle(buttonCenterX, buttonCenterY, radius, paint);
+        //canvas.drawCircle(buttonCenterX, buttonCenterY, radius, paint);
+        dest.set(
+                (int) (buttonCenterX - scaledSpriteSize),
+                (int) (buttonCenterY - scaledSpriteSize),
+                (int) (buttonCenterX + scaledSpriteSize),
+                (int) (buttonCenterY + scaledSpriteSize)
+        );
+        canvas.drawBitmap(button, src, dest, null);;
+
     }
 }

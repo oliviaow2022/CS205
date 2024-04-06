@@ -4,6 +4,7 @@ import static com.example.cs205proj.MediaManager.*;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,11 @@ public class GameWin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("Hello from Win!");
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+
+        );
         setContentView(R.layout.activity_game_win);
         Button buttonStart = findViewById(R.id.button_start);
         System.out.println("Playing Win!");

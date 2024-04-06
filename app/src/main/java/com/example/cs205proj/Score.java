@@ -50,11 +50,12 @@ public class Score {
 
     public void draw(Canvas canvas, Paint paint){
         //    offset from top right of screen
-        final int OFFSET = 100;
+        final int OFFSETX = 100;
+        final int OFFSETY = 150;
         paint.setColor(Color.WHITE);
         paint.setTypeface(typeface);
         paint.setTextScaleX(0.5f);
         paint.setTextSize(100f);
-        canvas.drawText("score: " + this.value, OFFSET, OFFSET, paint);
+        canvas.drawText("score: " + this.value, OFFSETX, OFFSETY, paint);
     }
 }

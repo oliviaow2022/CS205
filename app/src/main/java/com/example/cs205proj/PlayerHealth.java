@@ -15,7 +15,7 @@ public class PlayerHealth {
     private final Bitmap fullHeart;
     private final Rect heartRect;
     private int x = 100;
-    private int y = 150;
+    private int y = 200;
     private int heartWidth = 80;
     private int health;
     private final int maxHealth = 5;

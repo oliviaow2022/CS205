@@ -20,6 +20,7 @@ public class Background {
     int mapHeight = 2000;
     Rect goalRect;
 
+
     public Background(Context context, int tileSize) {
         spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile1);
         mrtSprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.train);

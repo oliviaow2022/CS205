@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.media.MediaPlayer;
 
@@ -28,6 +29,11 @@ public class MainActivity extends Activity {
         if (gameView == null) {
             gameView = new GameView(this, player, score);
         }
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+
+        );
         setContentView(gameView);
 
         if (savedInstanceState != null) {
