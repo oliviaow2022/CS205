@@ -15,14 +15,16 @@ public class AttackButton {
     final int radius = 150; // Radius of the attack button
     Hitbox playerHitbox;
     Bitmap button;
+    Bitmap buttonActive;
     Rect src, dest;
     float scaleFactor = (radius - 50) * 2.0f / 300;
-    int scaledSpriteSize = (int) (300 * scaleFactor);
+    int scaledSpriteSize = (int) (250 * scaleFactor);
 
 
     public AttackButton(Context context, Hitbox insertedHitbox) {
         this.playerHitbox = insertedHitbox;
         this.button = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack);
+        this.buttonActive = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack1);
         this.src = new Rect(0, 0, button.getWidth(), button.getHeight());
         this.dest = new Rect(buttonCenterX - radius, buttonCenterY - radius,
                 buttonCenterX + radius, buttonCenterY + radius);
@@ -55,7 +57,13 @@ public class AttackButton {
                 (int) (buttonCenterX + scaledSpriteSize),
                 (int) (buttonCenterY + scaledSpriteSize)
         );
-        canvas.drawBitmap(button, src, dest, null);;
+        if (playerHitbox.isActivated) {
+            canvas.drawBitmap(buttonActive, src, dest, null);
+
+        }
+        else {
+            canvas.drawBitmap(button, src, dest, null);
+        }
 
     }
 }

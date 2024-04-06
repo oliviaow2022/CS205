@@ -30,7 +30,7 @@ public class Joystick {
     int dirY = 0;
 
     float scaleFactor = (radius - 50) * 2.0f / 300;
-    int scaledSpriteSize = (int) (300 * scaleFactor);
+    int scaledSpriteSize = (int) (250 * scaleFactor);
 
 
     public Joystick(Context context, Player thePlayer) {
@@ -102,10 +102,10 @@ public class Joystick {
 
         // Draw joystick sprite
         ballDstRect.set(
-                (int) (x - scaledSpriteSize / 2),
-                (int) (y - scaledSpriteSize / 2),
-                (int) (x + scaledSpriteSize / 2),
-                (int) (y + scaledSpriteSize / 2)
+                (int) (x - scaledSpriteSize / 1.5),
+                (int) (y - scaledSpriteSize / 1.5),
+                (int) (x + scaledSpriteSize / 1.5),
+                (int) (y + scaledSpriteSize / 1.5)
         );
         padDstRect.set(
                 (int) (joystickCenterX - scaledSpriteSize),
