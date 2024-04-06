@@ -18,17 +18,17 @@
 
     <ImageView
         android:id="@+id/titleImageView"
-        android:layout_width="532dp"
-        android:layout_height="224dp"
+        android:layout_width="388dp"
+        android:layout_height="177dp"
         android:layout_above="@id/button_start"
         android:scaleType="fitCenter"
         android:src="@drawable/youwin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.566" />
+        app:layout_constraintVertical_bias="0.455" />
 
     <Button
         android:id="@+id/button_start"
@@ -39,5 +39,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.853" />
+        app:layout_constraintVertical_bias="0.757" />
 </androidx.constraintlayout.widget.ConstraintLayout>

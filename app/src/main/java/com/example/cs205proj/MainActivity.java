@@ -1,5 +1,7 @@
 package com.example.cs205proj;
 
+import static com.example.cs205proj.MediaManager.*;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -10,7 +12,6 @@ import android.media.MediaPlayer;
 import androidx.annotation.NonNull;
 
 public class MainActivity extends Activity {
-    MediaPlayer backgroundMusic;
     Player player;
     DatabaseHelper db;
     Score score;
@@ -20,15 +21,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         GlobalContext globalContext = GlobalContext.getInstance();
         globalContext.setContext(this);
-
+        playBackgroundMusic(MainActivity.this, R.raw.battle_music);
         db = DatabaseHelper.getInstance(this, "Game");
         player = new Player(390, 0);
         score = new Score(this);
         GameView gameView = new GameView(this, player, score);
         setContentView(gameView);
-        // backgroundMusic = MediaPlayer.create(MainActivity.this, R.raw.battle_music);
-        // backgroundMusic.setLooping(true);
-        // backgroundMusic.start();
 
         if (savedInstanceState != null) {
             player.restoreInstanceState(savedInstanceState);
@@ -48,11 +46,9 @@ public class MainActivity extends Activity {
         db.insertScore(max_score);
         super.onPause();
 //        backgroundMusic.release();
-        if (backgroundMusic != null) {
-            backgroundMusic.stop();
-            backgroundMusic.release();
-            backgroundMusic = null;
-        }
+        System.out.println("Pausing from Main");
+        stopBackgroundMusic();
+        System.out.println("Exiting Main!");
     }
 
     @Override
@@ -66,11 +62,9 @@ public class MainActivity extends Activity {
         db.insertScore(max_score);
 
         // Stop and release MediaPlayer resources
-        if (backgroundMusic != null) {
-            backgroundMusic.stop();
-            backgroundMusic.release();
-            backgroundMusic = null;
-        }
+//        System.out.println("Stopping from Main");
+//        stopBackgroundMusic();
+
     }
 
     @Override
@@ -84,10 +78,8 @@ public class MainActivity extends Activity {
         db.insertScore(max_score);
 
         // Stop and release MediaPlayer resources
-        if (backgroundMusic != null) {
-            backgroundMusic.stop();
-            backgroundMusic.release();
-            backgroundMusic = null;
-        }
+        System.out.println("Destroy from Main");
+        stopBackgroundMusic();
+
     }
 }

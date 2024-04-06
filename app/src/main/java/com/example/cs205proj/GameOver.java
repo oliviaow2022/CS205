@@ -1,5 +1,7 @@
 package com.example.cs205proj;
 
+import static com.example.cs205proj.MediaManager.*;
+
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -13,6 +15,7 @@ public class GameOver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
         Button buttonStart = findViewById(R.id.button_start);
+        playOnce(GameOver.this, R.raw.lose_music);
         buttonStart.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -25,8 +28,17 @@ public class GameOver extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        stopBackgroundMusic();
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopBackgroundMusic();
+
         // Release any resources here if needed
     }
 

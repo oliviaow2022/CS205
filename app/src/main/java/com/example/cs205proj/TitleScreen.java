@@ -1,5 +1,7 @@
 package com.example.cs205proj;
 
+import static com.example.cs205proj.MediaManager.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,7 +16,6 @@ import androidx.core.content.res.ResourcesCompat;
 
 public class TitleScreen extends AppCompatActivity {
 
-    MediaPlayer titleMusic;
     DatabaseHelper db;
 
     @Override
@@ -22,9 +23,8 @@ public class TitleScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_title_screen);
         Button buttonStart = findViewById(R.id.button_start);
-        titleMusic = MediaPlayer.create(TitleScreen.this, R.raw.title_music);
-        titleMusic.setLooping(true);
-        titleMusic.start();
+        playBackgroundMusic(TitleScreen.this, R.raw.title_music);
+
 
 //        delete db if needed
 //        this.deleteDatabase("Game");
@@ -39,7 +39,6 @@ public class TitleScreen extends AppCompatActivity {
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                titleMusic.stop();
                 Intent intent = new Intent(TitleScreen.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -49,17 +48,13 @@ public class TitleScreen extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        titleMusic.release();
+        stopBackgroundMusic();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         // Stop and release MediaPlayer resources
-        if (titleMusic != null) {
-            titleMusic.stop();
-            titleMusic.release();
-            titleMusic = null;
-        }
+        stopBackgroundMusic();
     }
 }
