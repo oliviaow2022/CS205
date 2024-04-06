@@ -15,6 +15,7 @@ public class MainActivity extends Activity {
     Player player;
     DatabaseHelper db;
     Score score;
+    GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,9 @@ public class MainActivity extends Activity {
         db = DatabaseHelper.getInstance(this, "Game");
         player = new Player(390, 0, MainActivity.this);
         score = new Score(this);
-        GameView gameView = new GameView(this, player, score);
+        if (gameView == null) {
+            gameView = new GameView(this, player, score);
+        }
         setContentView(gameView);
 
         if (savedInstanceState != null) {
@@ -48,42 +51,25 @@ public class MainActivity extends Activity {
         System.out.println("Pausing from Main");
         stopBackgroundMusic();
         System.out.println("Exiting Main!");
+        gameView.pauseGame();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        //      REQUIREMENT store data into sqlLite
-        int current_score = score.getValue();
-        int max_score = Math.max(current_score, db.getLatestScore());
-        System.out.println("onStop:" + current_score);
-        db.insertScore(max_score);
-
-        // Stop and release MediaPlayer resources
-//        System.out.println("Stopping from Main");
-//        stopBackgroundMusic();
-
-    }
     @Override
     protected void onResume() {
         super.onResume();
+        gameView.resumeGame();
         playBackgroundMusic(MainActivity.this, R.raw.battle_music);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        //      REQUIREMENT store data into sqlLite
-        int current_score = score.getValue();
-        int max_score = Math.max(current_score, db.getLatestScore());
-        System.out.println("onDestroy:" + current_score);
-        db.insertScore(max_score);
-
         // Stop and release MediaPlayer resources
         System.out.println("Destroy from Main");
         stopBackgroundMusic();
+
 
     }
 }

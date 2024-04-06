@@ -3,13 +3,13 @@ import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
 public class GameThread extends Thread {
-    private SurfaceHolder surfaceHolder;
-    private GameView gameView;
+    final SurfaceHolder surfaceHolder;
+    GameView gameView;
     private boolean running;
     private boolean paused;
-    private long targetFPS = 50;
+    long targetFPS = 50;
 
-    private ElapsedTimer elapsedTimer = new ElapsedTimer();
+    ElapsedTimer elapsedTimer = new ElapsedTimer();
 
     public GameThread(SurfaceHolder surfaceHolder, GameView gameView) {
         this.surfaceHolder = surfaceHolder;
@@ -72,5 +72,8 @@ public class GameThread extends Thread {
                 }
             }
         }
+        System.out.println("Exiting Thread!");
     }
+
+
 }

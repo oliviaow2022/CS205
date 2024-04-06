@@ -14,7 +14,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private final GameThread gameThread;
+    public  GameThread gameThread;
     private final Player player;
     private final Enemies enemies;
     private final Joystick joystick;
@@ -46,12 +46,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         enemies = new Enemies(2, display, player, score, playerHealth, background);
         background = new Background(context, 64);
         pauseButton = new PauseGameButton(context);
+
+
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        gameThread.setRunning(true);
-        gameThread.start();
+        if (gameThread.getState() == Thread.State.NEW) {
+            gameThread.setRunning(true);
+            gameThread.start();
+        }
+
 //        enemies.setRunning(true);
 //        enemies.start();
     }
@@ -64,19 +69,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry = true;
-        while (retry) {
-            try {
-                enemies.end();
-                gameThread.setRunning(false);
-                gameThread.join();
-                System.out.println("surface destroyed");
-                break;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.out.println(e);
-            }
-        }
+        System.out.println("View Destroying");
+//        try {
+//            // Stop the game thread
+//            enemies.end();
+//            gameThread.setRunning(false);
+//            // Wait for the game thread to finish
+//            gameThread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//            // Handle interrupted exception if needed
+//        }
     }
 
     @Override
