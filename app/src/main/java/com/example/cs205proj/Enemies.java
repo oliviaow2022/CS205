@@ -59,5 +59,9 @@ public class Enemies {
             enemies.executeEnemy(new Enemy(x_pos, y_pos, player, score, enemyFrames, playerHealth));
         }
     }
+    public void end (){
+//        System.out.println("shutting down");
+        enemies.shutdownNow();
+    }
 }
 

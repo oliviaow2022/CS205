@@ -47,7 +47,12 @@ public class MainActivity extends Activity {
         System.out.println("onPause:" + current_score);
         db.insertScore(max_score);
         super.onPause();
-        backgroundMusic.release();
+//        backgroundMusic.release();
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+            backgroundMusic.release();
+            backgroundMusic = null;
+        }
     }
 
     @Override

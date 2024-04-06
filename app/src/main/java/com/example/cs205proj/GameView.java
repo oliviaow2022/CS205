@@ -67,10 +67,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry = true;
         while (retry) {
             try {
+                enemies.end();
                 gameThread.setRunning(false);
                 gameThread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                System.out.println(e);
             }
         }
     }
@@ -111,6 +113,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void stopGame() {
+        enemies.end();
         gameThread.setRunning(false);
     }
 
