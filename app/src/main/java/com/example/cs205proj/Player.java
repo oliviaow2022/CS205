@@ -11,7 +11,11 @@ public class Player extends Entity {
     int maxV = 1;
     private final Hitbox playerHitbox;
     final PlayerStateMachine playerStateMachine;
+
+    // for collision
     Rect rect;
+
+    // variables to handle invulnerability
     private boolean invulnerable = false;
     int invulnerableDuration = 0;
     long invulnerableTimer = 0;
@@ -23,7 +27,7 @@ public class Player extends Entity {
         this.y = y;
 
         this.width = 100; //current width of player
-        this.height = 200; //current height of player
+        this.height = 156; //current height of player
         this.velocityX = 0;
         this.velocityY = 0;
         this.playerHitbox = new Hitbox(context,this);
@@ -61,6 +65,7 @@ public class Player extends Entity {
         velocityX = joystick.x - joystick.joystickCenterX;
         velocityY = joystick.y - joystick.joystickCenterY;
 
+        // determine main direction of player
         if (Math.abs(velocityX) >= Math.abs(velocityY)) {
             if (velocityX < 0) {
                 direction = "left";
@@ -79,6 +84,7 @@ public class Player extends Entity {
             }
         }
 
+        // update invulnerability timers
         if (invulnerable) {
             invulnerableTimer += deltaTime;
             flashTimer += deltaTime;

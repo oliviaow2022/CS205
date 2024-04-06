@@ -11,18 +11,19 @@ public class PlayerIdleState extends BaseState {
     Player player;
     Bitmap[] frames = new Bitmap[4];
     int currentAnimation = 0;
+    int spriteWidth;
+    int spriteHeight;
 
     public PlayerIdleState(Context context, Player player) {
         this.player = player;
 
-        Bitmap spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.character_walk);
+        frames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.walk_down_1);
+        frames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.walk_right_1);
+        frames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.walk_up_1);
+        frames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.walk_left_1);
 
-        int[] yCoordinate = {0, 90, 180, 250};
-
-        for (int i = 0; i < yCoordinate.length; i++) {
-            Bitmap frame = Bitmap.createBitmap(spriteSheet, 0, yCoordinate[i], 45, 90); // (Bitmap, x, y, width, height)
-            frames[i] = Bitmap.createScaledBitmap(frame, player.getWidth(), player.getHeight(),true);
-        }
+        spriteWidth = frames[0].getWidth();
+        spriteHeight = frames[1].getHeight();
     }
 
     public void update(long deltaTime) {
@@ -42,6 +43,6 @@ public class PlayerIdleState extends BaseState {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(frames[currentAnimation], null, new Rect(player.getX(), player.getY(), player.getX() + player.getWidth(), player.getY() + player.getHeight()), paint);
+        canvas.drawBitmap(frames[currentAnimation], new Rect(0, 0, spriteWidth, spriteHeight), new Rect(player.getX(), player.getY(), player.getX() + player.getWidth(), player.getY() + player.getHeight()), paint);
     }
 }

@@ -10,39 +10,41 @@ import android.graphics.Rect;
 public class EnemyFrames {
     Bitmap[] leftFrames = new Bitmap[4];
     Bitmap[] rightFrames = new Bitmap[4];
+    int spriteWalkWidth;
+    int spriteWalkHeight;
+    Rect spriteRect;
     Bitmap[] leftShootFrames = new Bitmap[4];
     Bitmap[] rightShootFrames = new Bitmap[4];
 
     public EnemyFrames() {
         Context context = GlobalContext.getInstance().getContext();
-        Bitmap spriteSheetRight = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_robot);
-        int[] xCoordinateRight = {80, 340, 610, 870};
 
-        for (int i = 0; i < xCoordinateRight.length; i++) {
-            Bitmap frame = Bitmap.createBitmap(spriteSheetRight, xCoordinateRight[i], 0, 120, 200);
-            rightFrames[i] = Bitmap.createScaledBitmap(frame, 120, 200, true);
-        }
+        rightFrames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot_right_1);
+        rightFrames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot_right_2);
+        rightFrames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot_right_3);
+        rightFrames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot_right_4);
 
-        int[] xCoordinateRightShoot = {70, 340, 600, 870};
+        leftFrames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot_left_1);
+        leftFrames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot_left_2);
+        leftFrames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot_left_3);
+        leftFrames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot_left_4);
 
-        for (int i = 0; i < xCoordinateRightShoot.length; i++) {
-            Bitmap frame = Bitmap.createBitmap(spriteSheetRight, xCoordinateRightShoot[i], 520, 145, 200);
-            rightShootFrames[i] = Bitmap.createScaledBitmap(frame, 145, 200, true);
-        }
+        rightShootFrames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.shoot_right_1);
+        rightShootFrames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.shoot_right_2);
+        rightShootFrames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.shoot_right_3);
+        rightShootFrames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.shoot_right_4);
 
-        Bitmap spriteSheetLeft = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_robot_flip);
-        int[] xCoordinateLeft = {1640, 1910, 2170, 2430};
+        leftShootFrames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.shoot_left_1);
+        leftShootFrames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.shoot_left_2);
+        leftShootFrames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.shoot_left_3);
+        leftShootFrames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.shoot_left_4);
 
-        for (int i = 0; i < xCoordinateLeft.length; i++) {
-            Bitmap frame = Bitmap.createBitmap(spriteSheetLeft, xCoordinateLeft[i], 0, 145, 200);
-            leftFrames[i] = Bitmap.createScaledBitmap(frame, 145, 200, true);
-        }
+        spriteWalkWidth = rightFrames[0].getWidth();
+        spriteWalkHeight = rightFrames[0].getHeight();
+        spriteRect = new Rect(0,0, spriteWalkWidth, spriteWalkHeight);
+    }
 
-        int[] xCoordinateLeftShoot = {1640, 1910, 2170, 2430};
-
-        for (int i = 0; i < xCoordinateLeftShoot.length; i++) {
-            Bitmap frame = Bitmap.createBitmap(spriteSheetLeft, xCoordinateLeftShoot[i], 520, 145, 200);
-            leftShootFrames[i] = Bitmap.createScaledBitmap(frame, 145, 200, true);
-        }
+    public Rect getSpriteRect() {
+        return this.spriteRect;
     }
 }

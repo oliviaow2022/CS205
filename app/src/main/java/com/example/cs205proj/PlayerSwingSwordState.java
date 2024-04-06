@@ -8,30 +8,46 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class PlayerSwingSwordState extends BaseState {
-    Player player;
-    Animation[] animations;
-    int currentAnimation;
+    private final Player player;
+    private final Animation[] animations;
+    private int currentAnimation;
+    Rect spriteRect;
+    int xOffset = 50;
 
     public PlayerSwingSwordState(Context context, Player player) {
         this.player = player;
 
         Animation[] animations = new Animation[4];
 
-        Bitmap spriteSheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.character_swing_sword);
+        Bitmap[] swordDownFrames = new Bitmap[4];
+        swordDownFrames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_down_1);
+        swordDownFrames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_down_2);
+        swordDownFrames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_down_3);
+        swordDownFrames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_down_4);
+        animations[0] = new Animation(swordDownFrames, true, 200);
 
-        int[] xCoordinate = {0, 90, 180, 250};
-        int[] yCoordinate = {0, 90, 180, 250};
+        Bitmap[] swordRightFrames = new Bitmap[4];
+        swordRightFrames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_right_1);
+        swordRightFrames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_right_2);
+        swordRightFrames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_right_3);
+        swordRightFrames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_right_4);
+        animations[1] = new Animation(swordRightFrames, true, 200);
 
-        for (int i = 0; i < yCoordinate.length; i++) {
-            Bitmap[] frames = new Bitmap[4];
+        Bitmap[] swordUpFrames = new Bitmap[4];
+        swordUpFrames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_up_1);
+        swordUpFrames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_up_2);
+        swordUpFrames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_up_3);
+        swordUpFrames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_up_4);
+        animations[2] = new Animation(swordUpFrames, true, 200);
 
-            for (int j = 0; j < xCoordinate.length; j++) {
-                Bitmap frame = Bitmap.createBitmap(spriteSheet, xCoordinate[j], yCoordinate[i], 90, 90); // (Bitmap, x, y, width, height)itmap frame = Bitmap.createBitmap(spriteSheet, xCoordinate[j], yCoordinate[i], 45, 90); // (Bitmap, x, y, width, height)
-                frames[j] = Bitmap.createScaledBitmap(frame, player.getWidth(), player.getHeight(),true);
-            }
+        Bitmap[] swordLeftFrames = new Bitmap[4];
+        swordLeftFrames[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_left_1);
+        swordLeftFrames[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_left_2);
+        swordLeftFrames[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_left_3);
+        swordLeftFrames[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.sword_left_4);
+        animations[3] = new Animation(swordLeftFrames, true, 200);
 
-            animations[i] = new Animation(frames, false, 200);
-        }
+        spriteRect = new Rect(0, 0, swordDownFrames[0].getWidth(), swordDownFrames[0].getHeight());
 
         this.animations = animations;
     }
@@ -39,9 +55,9 @@ public class PlayerSwingSwordState extends BaseState {
     public void update(long deltaTime){
         if (player.getDirection().equals("down")) {
             currentAnimation = 0;
-        } else if (player.getDirection().equals("up")) {
-            currentAnimation = 1;
         } else if (player.getDirection().equals("right")) {
+            currentAnimation = 1;
+        } else if (player.getDirection().equals("up")) {
             currentAnimation = 2;
         } else if (player.getDirection().equals("left")) {
             currentAnimation = 3;
@@ -56,6 +72,6 @@ public class PlayerSwingSwordState extends BaseState {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(player.getX(), player.getY(), player.getX() + player.getWidth(), player.getY() + player.getHeight()), paint);
+        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), spriteRect, new Rect(player.getX() - xOffset, player.getY(), player.getX() - xOffset + player.getWidth(), player.getY() + player.getHeight()), paint);
     }
 }

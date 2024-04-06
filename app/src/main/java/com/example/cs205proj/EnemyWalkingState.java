@@ -8,9 +8,11 @@ public class EnemyWalkingState extends BaseState {
     int currentAnimation = 0;
     Enemy enemy;
     Animation[] animations;
+    Rect spriteRect;
 
     public EnemyWalkingState(Enemy enemy, EnemyFrames enemyFrames) {
         this.enemy = enemy;
+        this.spriteRect = enemyFrames.getSpriteRect();
 
         Animation[] walkingAnimation = {new Animation(enemyFrames.rightFrames, true, 200), new Animation(enemyFrames.leftFrames, true, 200)};
         this.animations = walkingAnimation;
@@ -34,6 +36,6 @@ public class EnemyWalkingState extends BaseState {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(enemy.getX(), enemy.getY(), enemy.getX() + enemy.getWidth(), enemy.getY() + enemy.getHeight()), paint);
+        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), spriteRect, new Rect(enemy.getX(), enemy.getY(), enemy.getX() + enemy.getWidth(), enemy.getY() + enemy.getHeight()), paint);
     }
 }

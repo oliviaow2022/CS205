@@ -29,12 +29,15 @@ public class PlayerStateMachine {
         if (state.equals("idle")) {
             currentState = playerIdleState;
             player.setWidth(100);
+            player.setHeight(156);
         } else if (state.equals("walk")) {
             currentState = playerWalkingState;
             player.setWidth(100);
+            player.setHeight(156);
         } else if (state.equals("swing-sword")) {
             currentState = playerSwingSwordState;
             player.setWidth(200);
+            player.setHeight(200);
         }
     }
 

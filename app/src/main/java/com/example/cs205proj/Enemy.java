@@ -27,8 +27,8 @@ public class Enemy extends Entity implements Runnable {
         super();
         this.x = x;
         this.y = y;
-        this.width = 120;
-        this.height = 200;
+        this.width = 200;
+        this.height = 225;
         this.velocityX = 0;
         this.velocityY = 0;
         this.player = player;

@@ -6,12 +6,14 @@ import android.graphics.Rect;
 
 public class EnemyShootState extends BaseState {
 
-    int currentAnimation = 0;
-    Enemy enemy;
-    Animation[] animations;
+    private int currentAnimation = 0;
+    private final Enemy enemy;
+    private final Animation[] animations;
+    private final Rect spriteRect;
 
     public EnemyShootState(Enemy enemy, EnemyFrames enemyFrames) {
         this.enemy = enemy;
+        this.spriteRect = enemyFrames.getSpriteRect();
 
         Animation[] shootingAnimation = {new Animation(enemyFrames.rightShootFrames, true, 200), new Animation(enemyFrames.leftShootFrames, true, 200)};
         this.animations = shootingAnimation;
@@ -31,6 +33,6 @@ public class EnemyShootState extends BaseState {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), null, new Rect(enemy.getX(), enemy.getY(), enemy.getX() + enemy.getWidth(), enemy.getY() + enemy.getHeight()), paint);
+        canvas.drawBitmap(animations[currentAnimation].getCurrentFrame(), spriteRect, new Rect(enemy.getX(), enemy.getY(), enemy.getX() + enemy.getWidth(), enemy.getY() + enemy.getHeight()), paint);
     }
 }
