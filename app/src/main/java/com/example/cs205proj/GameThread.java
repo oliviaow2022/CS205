@@ -2,13 +2,18 @@ package com.example.cs205proj;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+/*
+ * The game thread has three aspects.
+ * Firstly, draw renders the game visually, with all the relevant sprites, animations and graphics
+ * Secondly, update handles the game logic at every unit time delta
+ * Thirdly, the thread sleeps between active periods to conserve system resources and maintain consistent frame rates
+ */
 public class GameThread extends Thread {
     final SurfaceHolder surfaceHolder;
     GameView gameView;
     private boolean running;
     private boolean paused;
     long targetFPS = 50;
-
     ElapsedTimer elapsedTimer = new ElapsedTimer();
 
     public GameThread(SurfaceHolder surfaceHolder, GameView gameView) {

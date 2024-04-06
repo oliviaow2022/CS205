@@ -5,6 +5,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+/*
+ * Projectiles are generated when Enemies shoot in the walk state
+ * They disappear if the player parries them or exceed a maximum distance travelled.
+ * If they collide with the player, the player loses 1 health point.
+ */
+
 public class Projectile {
     int x;
     int y;
@@ -54,6 +60,7 @@ public class Projectile {
             x += speed * deltaTime;
         }
 
+        // update rect for collision
         rect.set(x, y, x + width, y + height);
     }
 

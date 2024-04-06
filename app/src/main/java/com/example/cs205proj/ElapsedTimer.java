@@ -1,5 +1,8 @@
 package com.example.cs205proj;
 
+/*
+ * ElapsedTimer is used to manage changes in time between frames
+ */
 public class ElapsedTimer {
     private long updateStartTime = 0L;
     private boolean initialized = false;

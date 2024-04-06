@@ -4,6 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+/*
+* Player has 3 states: idle, walking, swing sword
+* Transitions between states are done from the currently active state
+*/
 public class PlayerStateMachine {
     private final PlayerWalkingState playerWalkingState;
     private final PlayerSwingSwordState playerSwingSwordState;
@@ -25,6 +29,7 @@ public class PlayerStateMachine {
         currentState.update(deltaTime);
     }
 
+    // modify player widths and heights with state changes because the sprites have different aspect ratios
     public void changeState(String state) {
         if (state.equals("idle")) {
             currentState = playerIdleState;

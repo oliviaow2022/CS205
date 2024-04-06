@@ -1,5 +1,10 @@
 package com.example.cs205proj;
 
+/*
+ * The Entity class is the parent class for Player and Enemy
+ * with common attributes such as x, y, width, height, velocity, direction
+ */
+
 public class Entity {
     int x;
     int y;
