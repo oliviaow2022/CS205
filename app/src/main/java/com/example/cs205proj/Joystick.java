@@ -18,7 +18,6 @@ public class Joystick {
     final int radius = 150; // Radius of the joystick
     int x = joystickCenterX;  //this is the varying coordinates of the joystick itself
     int y = joystickCenterY;
-    boolean withinCircle = false;
     Player player;
 
     Bitmap pad;
@@ -69,7 +68,6 @@ public class Joystick {
         if (action == MotionEvent.ACTION_UP){
             x = joystickCenterX;
             y = joystickCenterY;
-            withinCircle = false;
         }
         return true;
     }
@@ -81,7 +79,7 @@ public class Joystick {
         float distanceX = x - joystickCenterX;
         float distanceY = y - joystickCenterY;
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-        if (distance > radius){ //this resets position of joystick after hand is let go
+        if (distance > radius){ //this resets position of joystick when chaning orientation
             x = joystickCenterX;
             y = joystickCenterY;
         }
