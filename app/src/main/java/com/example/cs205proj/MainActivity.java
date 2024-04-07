@@ -53,11 +53,9 @@ public class MainActivity extends Activity {
         System.out.println("onPause:" + current_score);
         db.insertScore(max_score);
         super.onPause();
-//        backgroundMusic.release();
         System.out.println("Pausing from Main");
         stopBackgroundMusic();
         System.out.println("Exiting Main!");
-        gameView.pauseGame();
     }
 
     @Override
