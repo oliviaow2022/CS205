@@ -1,5 +1,7 @@
 package com.example.cs205proj;
 
+import static com.example.cs205proj.MediaManager.*;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -58,9 +60,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             gameThread.setRunning(true);
             gameThread.start();
         }
-
-//        enemies.setRunning(true);
-//        enemies.start();
     }
 
     @Override
@@ -72,16 +71,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         System.out.println("View Destroying");
-//        try {
-//            // Stop the game thread
-//            enemies.end();
-//            gameThread.setRunning(false);
-//            // Wait for the game thread to finish
-//            gameThread.join();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//            // Handle interrupted exception if needed
-//        }
     }
 
     @Override
@@ -112,10 +101,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
     public void pauseGame() {
         gameThread.setPause();
+        pauseMusic();
         showPauseDialog(context);
     }
 
     public void resumeGame() {
+        resumeMusic();
         gameThread.setResume();
     }
 

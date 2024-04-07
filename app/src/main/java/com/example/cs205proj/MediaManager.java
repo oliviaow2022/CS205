@@ -3,9 +3,6 @@ package com.example.cs205proj;
 import android.content.Context;
 import android.media.MediaPlayer;
 
-import android.content.Context;
-import android.media.MediaPlayer;
-
 public class MediaManager {
 
     private static MediaPlayer mediaPlayer;
@@ -32,6 +29,19 @@ public class MediaManager {
     public static void stopBackgroundMusic() {
         synchronized (lock) {
             releaseMediaPlayer();
+        }
+    }
+
+    public static void pauseMusic() {
+        synchronized (lock) {
+            if (mediaPlayer != null) {
+                mediaPlayer.pause();
+            }
+        }
+    }
+    public static void resumeMusic() {
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
         }
     }
 
