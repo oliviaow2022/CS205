@@ -55,12 +55,13 @@ public class Joystick {
         if (action == MotionEvent.ACTION_MOVE){
             int origX = x;
             int origY = y;
-            if (distance <= radius){
+            if (distance <= radius) {
                 x = (int) touchX;
                 y = (int) touchY;
                 withinCircle = true;
-            }
-            if (withinCircle){
+                dirX = x;
+                dirY = y;
+            } else if (withinCircle){
                 double angle = Math.atan2(distanceY, distanceX);
                 x = (int) (joystickCenterX + (radius - 25) * Math.cos(angle));
                 y = (int) (joystickCenterY + (radius - 25) * Math.sin(angle));

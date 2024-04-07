@@ -36,7 +36,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Hitbox playerHitbox = player.getHitbox();
         playerAttackButton = new AttackButton(context, playerHitbox);
         getHolder().addCallback(this);
-        gameThread = new GameThread(getHolder(), this);
+        if (gameThread == null) {
+            gameThread = new GameThread(getHolder(), this);
+        }
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
