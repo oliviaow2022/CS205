@@ -13,7 +13,7 @@ public class Hitbox extends Entity {
     private Player player;
     long timeActivated;
     boolean isActivated = false;
-
+    boolean stayAtPosition;
     Bitmap reticle;
     Bitmap reticleActive;
 
@@ -29,6 +29,7 @@ public class Hitbox extends Entity {
         this.velocityY = 0;
         this.reticle = BitmapFactory.decodeResource(context.getResources(), R.drawable.reticle1);
         this.reticleActive = BitmapFactory.decodeResource(context.getResources(), R.drawable.reticle);
+        this.stayAtPosition = false;
 
     }
 
@@ -66,8 +67,8 @@ public class Hitbox extends Entity {
         }
     
         // Calculate hitbox position relative to player's position
-        int offsetX = player.getX() + finalOffsetX + 50;
-        int offsetY = player.getY() + finalOffsetY + 100;
+        int offsetX = player.getX() + finalOffsetX + 20;
+        int offsetY = player.getY() + finalOffsetY + 110;
     
         // Update hitbox position
         this.x = offsetX;
@@ -77,6 +78,9 @@ public class Hitbox extends Entity {
                 System.out.println("HITBOX DEACTIVATED");
             }
             isActivated = false;
+        }
+        if (this.stayAtPosition){
+            return;
         }
         rect.set(x, y, x + width, y + height);
     }

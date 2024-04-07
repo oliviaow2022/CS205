@@ -13,15 +13,15 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 
 public class Joystick {
-    int joystickCenterX;
+    int joystickCenterX;  //joystick center is the "true" center of the joystick, the reference position for the joystick position
     int joystickCenterY;
     final int radius = 150; // Radius of the joystick
     int x = joystickCenterX;  //this is the varying coordinates of the joystick itself
     int y = joystickCenterY;
-    boolean withinCircle = false;
+    boolean withinCircle = false;  //flag to check that the joystick position is within bounds
     Player player;
-
-    Bitmap pad;
+    Hitbox domain;
+    Bitmap pad;  //bitmaps for joystick assets
     Rect padSrcRect, padDstRect;
 
     Bitmap ball;
@@ -33,15 +33,16 @@ public class Joystick {
     int scaledSpriteSize = (int) (250 * scaleFactor);
 
 
-    public Joystick(Context context, Player thePlayer) {
+    public Joystick(Context context, Player thePlayer, Hitbox hitbox) {
         this.pad = BitmapFactory.decodeResource(context.getResources(), R.drawable.pad);
         this.ball = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball);
         padSrcRect = new Rect(0, 0, pad.getWidth(), pad.getHeight());
         padDstRect = new Rect();
         ballSrcRect = new Rect(0, 0, ball.getWidth(), ball.getHeight());
         ballDstRect = new Rect();
-        player = thePlayer;
-
+        this.player = thePlayer;
+        this.domain = hitbox;
+        
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -69,22 +70,24 @@ public class Joystick {
         if (action == MotionEvent.ACTION_UP){
             x = joystickCenterX;
             y = joystickCenterY;
-            if (player.getDirection().equals("left")){
-                dirX = x- 1;
-            }
-            else if (player.getDirection().equals("right")){
-                dirX =x+ 1;
-            }
-            else if (player.getDirection().equals("up")){
-                dirY = y-1;
-            }
-            else if (player.getDirection().equals("down")){
-                dirY = y+1;
-            }
+            // if (player.getDirection().equals("left")){
+            //     dirX = x- 1;
+            // }
+            // else if (player.getDirection().equals("right")){
+            //     dirX =x+ 1;
+            // }
+            // else if (player.getDirection().equals("up")){
+            //     dirY = y-1;
+            // }
+            // else if (player.getDirection().equals("down")){
+            //     dirY = y+1;
+            // }
+            
             // player.velocityX = 0;
             // player.velocityY = 0;
             withinCircle = false;
         }
+        domain.stayAtPosition = true;
         return true;
     }
 
