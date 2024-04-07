@@ -58,7 +58,7 @@ public class Joystick {
                 y = (int) touchY;
                 dirX = x;
                 dirY = y;
-            }  else if (distance <= radius + 100){
+            }  else if (distance <= radius + 300){
                 double angle = Math.atan2(distanceY, distanceX);
                 x = (int) (joystickCenterX + (radius - 25) * Math.cos(angle));
                 y = (int) (joystickCenterY + (radius - 25) * Math.sin(angle));
