@@ -8,7 +8,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 
 public class Player extends Entity {
-    int maxV = 1;
+    int maxV = 10;
     private final Hitbox playerHitbox;
     final PlayerStateMachine playerStateMachine;
 
@@ -64,23 +64,24 @@ public class Player extends Entity {
     public void update(long deltaTime, Joystick joystick, Background background) {
         velocityX = joystick.x - joystick.joystickCenterX;
         velocityY = joystick.y - joystick.joystickCenterY;
-
+        int absVx = Math.abs(velocityX) / 10;
+        int absVy = Math.abs(velocityY) / 10;
         // determine main direction of player
         if (Math.abs(velocityX) >= Math.abs(velocityY)) {
             if (velocityX < 0) {
                 direction = "left";
-                x = (int) Math.max(0, x - Math.min(maxV,-velocityX) * deltaTime);
+                x = (int) Math.max(0, x - (Math.min(maxV,absVx) * deltaTime) / 8);
             } else if (velocityX > 0){
                 direction = "right";
-                x = (int) Math.min(background.mapWidth - width, x + Math.min(maxV,velocityX) * deltaTime);
+                x = (int) Math.min(background.mapWidth - width, x + (Math.min(maxV,absVx) * deltaTime) / 8);
             }
         } else {
             if (velocityY < 0) {
                 direction = "up";
-                y = (int) Math.max(0, y - Math.min(maxV,-velocityY) * deltaTime);
+                y = (int) Math.max(0, y - (Math.min(maxV,absVy) * deltaTime) / 8);
             } else if (velocityY > 0){
                 direction = "down";
-                y = (int) Math.min(background.mapHeight - height, y + Math.min(maxV,velocityY) * deltaTime);
+                y = (int) Math.min(background.mapHeight - height, y + ((Math.min(maxV,absVy) * deltaTime) / 8));
             }
         }
 
