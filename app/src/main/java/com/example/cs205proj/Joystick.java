@@ -53,8 +53,6 @@ public class Joystick {
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
         if (action == MotionEvent.ACTION_MOVE){
-            int origX = x;
-            int origY = y;
             if (distance <= radius) {
                 x = (int) touchX;
                 y = (int) touchY;
@@ -71,20 +69,6 @@ public class Joystick {
         if (action == MotionEvent.ACTION_UP){
             x = joystickCenterX;
             y = joystickCenterY;
-//            if (player.getDirection().equals("left")){
-//                dirX = x- 1;
-//            }
-//            else if (player.getDirection().equals("right")){
-//                dirX =x+ 1;
-//            }
-//            else if (player.getDirection().equals("up")){
-//                dirY = y-1;
-//            }
-//            else if (player.getDirection().equals("down")){
-//                dirY = y+1;
-//            }
-            // player.velocityX = 0;
-            // player.velocityY = 0;
             withinCircle = false;
         }
         return true;
