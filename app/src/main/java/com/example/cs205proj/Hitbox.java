@@ -55,8 +55,8 @@ public class Hitbox extends Entity {
         double angle = Math.atan2(joystickOffsetY, joystickOffsetX);
     
         // Calculate hitbox position based on joystick offset and angle
-        int finalOffsetX = (int) (Math.cos(angle) * 50);
-        int finalOffsetY = (int) (Math.sin(angle) * 50);
+        int finalOffsetX = (int) (Math.cos(angle) * 100);
+        int finalOffsetY = (int) (Math.sin(angle) * 100);
 
         if (finalOffsetX < 0){
             finalOffsetX -= 100;
@@ -66,8 +66,8 @@ public class Hitbox extends Entity {
         }
     
         // Calculate hitbox position relative to player's position
-        int offsetX = player.getX() + finalOffsetX + 50;
-        int offsetY = player.getY() + finalOffsetY + 100;
+        int offsetX = player.getX() + finalOffsetX + 25;
+        int offsetY = player.getY() + finalOffsetY + 75;
     
         // Update hitbox position
         this.x = offsetX;

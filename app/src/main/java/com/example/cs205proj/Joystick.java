@@ -53,34 +53,39 @@ public class Joystick {
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
         if (action == MotionEvent.ACTION_MOVE){
+            int origX = x;
+            int origY = y;
             if (distance <= radius){
                 x = (int) touchX;
                 y = (int) touchY;
                 withinCircle = true;
-            } else if (withinCircle){
+            }
+            if (withinCircle){
                 double angle = Math.atan2(distanceY, distanceX);
                 x = (int) (joystickCenterX + (radius - 25) * Math.cos(angle));
                 y = (int) (joystickCenterY + (radius - 25) * Math.sin(angle));
+                dirX = x;
+                dirY = y;
+            } else {
+                x = origX;
+                y = origY;
             }
-
-            dirX = x;
-            dirY = y;
         }
         if (action == MotionEvent.ACTION_UP){
             x = joystickCenterX;
             y = joystickCenterY;
-            if (player.getDirection().equals("left")){
-                dirX = x- 1;
-            }
-            else if (player.getDirection().equals("right")){
-                dirX =x+ 1;
-            }
-            else if (player.getDirection().equals("up")){
-                dirY = y-1;
-            }
-            else if (player.getDirection().equals("down")){
-                dirY = y+1;
-            }
+//            if (player.getDirection().equals("left")){
+//                dirX = x- 1;
+//            }
+//            else if (player.getDirection().equals("right")){
+//                dirX =x+ 1;
+//            }
+//            else if (player.getDirection().equals("up")){
+//                dirY = y-1;
+//            }
+//            else if (player.getDirection().equals("down")){
+//                dirY = y+1;
+//            }
             // player.velocityX = 0;
             // player.velocityY = 0;
             withinCircle = false;
